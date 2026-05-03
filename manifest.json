@@ -2,7 +2,7 @@
   "name": "Kevala Home — WB RERA Check",
   "short_name": "WB RERA",
   "description": "Verify West Bengal RERA registered real estate projects. Free, fast, official.",
-  "start_url": "/",
+  "start_url": "/wbrera/",
   "display": "standalone",
   "background_color": "#100820",
   "theme_color": "#7c3aed",
