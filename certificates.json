@@ -20,6 +20,26 @@
     "registration_date": ""
   },
   {
+    "filename": "WBRERAPHOO2025003279.pdf",
+    "rera_no": "WBRERA/P/HOO/2025/003279",
+    "project_name": "JALTARANG",
+    "project_address": "Project Details : **",
+    "developer_name": "",
+    "valid_from": "",
+    "valid_until": "",
+    "project_type": "Residential",
+    "land_area_sqm": "",
+    "builtup_area_sqm": "",
+    "carpet_area_sqm": "",
+    "total_units": "",
+    "open_parking": "86",
+    "covered_parking": "48",
+    "mechanical_parking": "48",
+    "basement_parking": "86",
+    "project_status": "Not Started",
+    "registration_date": "06/08/2025"
+  },
+  {
     "filename": "WBRERAPKOL2025002427.pdf",
     "rera_no": "WBRERA/P/KOL/2025/002427",
     "project_name": "Utpalaa - The Condoville",
@@ -38,6 +58,26 @@
     "basement_parking": "474",
     "project_status": "Not Started",
     "registration_date": "04/02/2025"
+  },
+  {
+    "filename": "WBRERAPKOL2026004213.pdf",
+    "rera_no": "WBRERA/P/KOL/2026/004213",
+    "project_name": "Z Residences Phase II",
+    "project_address": "Project Details : **",
+    "developer_name": "",
+    "valid_from": "",
+    "valid_until": "",
+    "project_type": "Residential",
+    "land_area_sqm": "",
+    "builtup_area_sqm": "",
+    "carpet_area_sqm": "",
+    "total_units": "",
+    "open_parking": "31",
+    "covered_parking": "46",
+    "mechanical_parking": "46",
+    "basement_parking": "31",
+    "project_status": "Not Started",
+    "registration_date": "28/03/2026"
   },
   {
     "filename": "WBRERAPNOR2024002162.pdf",
