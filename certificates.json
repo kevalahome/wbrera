@@ -18,5 +18,25 @@
     "basement_parking": "",
     "project_status": "Not Started",
     "registration_date": "18/11/2024"
+  },
+  {
+    "filename": "WBRERAPNOR2025002592.pdf",
+    "rera_no": "WBRERA/P/NOR/2025/002592",
+    "project_name": "Crown",
+    "project_address": "Project Details : **",
+    "developer_name": "",
+    "valid_from": "",
+    "valid_until": "",
+    "project_type": "Residential",
+    "land_area_sqm": "",
+    "builtup_area_sqm": "",
+    "carpet_area_sqm": "",
+    "total_units": "",
+    "open_parking": "146",
+    "covered_parking": "141",
+    "mechanical_parking": "141",
+    "basement_parking": "146",
+    "project_status": "Not Started",
+    "registration_date": "11/03/2025"
   }
 ]
