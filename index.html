@@ -671,13 +671,18 @@ function getRisk(project, cert) {
     }
   }
 
-  // 5. Very new project (<6 months since registration)
+    // 5. Very new project (<6 months since registration)
   if (regDate) {
     const monthsSinceReg = (now - regDate) / (1000 * 60 * 60 * 24 * 30);
     if (monthsSinceReg < 6) {
       return { level: 'MEDIUM', cls: 'flag-warn', icon: '🟡', label: 'Moderate Risk', reason: 'Early-stage project. Limited track record available.' };
     }
   }
+
+  // Default: LOW risk
+  return { level: 'LOW', cls: 'flag-ok', icon: '🟢', label: 'Low Risk', reason: 'No immediate risk signals detected.' };
+}
+
 // ─── DEAL INTELLIGENCE ENGINE ────────────────────────
 const COST_EXTRA = { under_construction: 0.12, ready_to_move: 0.07, resale: 0.06 };
 const COST_APP_URL = 'https://kevalahome.github.io/wbcost';
