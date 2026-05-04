@@ -393,14 +393,18 @@ function getDealScore(price, riskLevel, cert) {
   const extraCostPercent = isUC ? 0.12 : 0.07;
   const trueCost = price * (1 + extraCostPercent);
   const extraAmount = trueCost - price;
+  
+  // Risk is independent of construction status
   let score = 0;
-  if (isUC) score -= 2; else score += 1;
   if (riskLevel === 'HIGH') score -= 3;
   if (riskLevel === 'MEDIUM') score -= 1;
   if (riskLevel === 'LOW') score += 2;
-  if (score <= -2) return { level: 'BAD', cls: 'flag-danger', icon: '🔴', label: 'Bad Deal', insight: `~₹${Math.round(extraAmount/100000)}L extra. High risk + high cost.`, trueCost };
-  if (score <= 1) return { level: 'AVERAGE', cls: 'flag-warn', icon: '🟡', label: 'Average Deal', insight: `~₹${Math.round(extraAmount/100000)}L extra. Some risk factors present.`, trueCost };
-  return { level: 'GOOD', cls: 'flag-ok', icon: '🟢', label: 'Good Deal', insight: `~₹${Math.round(extraAmount/100000)}L extra. Low risk profile.`, trueCost };
+  if (extraCostPercent > 0.10) score -= 1; // High extra cost slightly negative
+  if (extraCostPercent <= 0.07) score += 1; // Low extra cost positive
+  
+  if (score <= -2) return { level: 'BAD', cls: 'flag-danger', icon: '🔴', label: 'High Risk Deal', insight: `True cost ~₹${Math.round(trueCost/100000)}L (${Math.round(extraAmount/100000)}L extra). High project risk detected. Verify thoroughly before proceeding.`, trueCost };
+  if (score <= 0) return { level: 'CAUTION', cls: 'flag-warn', icon: '🟡', label: 'Review Before Buying', insight: `True cost ~₹${Math.round(trueCost/100000)}L (${Math.round(extraAmount/100000)}L extra). Some risk factors — check project progress and builder reputation.`, trueCost };
+  return { level: 'FAVORABLE', cls: 'flag-ok', icon: '🟢', label: 'Favorable Profile', insight: `True cost ~₹${Math.round(trueCost/100000)}L. Low risk + manageable extra costs. Still verify RERA details before purchase.`, trueCost };
 }
 
 function showDealPopup(projectName) {
@@ -537,7 +541,7 @@ function cardHTML(p, idx) {
     ${certHTML}
     <div class="card-flags"><div class="flag ${risk.cls}">${risk.icon} ${risk.label}</div><div class="flag ${risk.cls}" style="font-size:11px;">${risk.reason}</div></div>
     ${dealHTML}
-    <div class="card-actions"><button class="btn-verify" onclick="window.open('${PORTAL}','_blank')">🛡️ Verify Official</button><button class="btn-share" onclick="shareProject('${esc(p.name)}','${esc(p.rera)}')">📤 Share</button>${!dealPrice?`<button class="btn-verify" style="font-size:12px;" onclick="showDealPopup('${esc(p.name)}')">💰 Evaluate Deal</button>`:''}</div>
+    <div class="card-actions"><button class="btn-verify" onclick="window.open('${PORTAL}','_blank')">🛡️ Verify Official</button><button class="btn-share" onclick="shareProject('${esc(p.name)}','${esc(p.rera)}')">📤 Share</button>${!dealPrice?`<button class="btn-verify" style="font-size:12px;" onclick="window.open('${COST_APP_URL}?price=${dealPrice||'8000000'}','_blank')">💰 Check True Cost</button>`:''}</div>
     ${certBtn?`<div style="padding:0 16px 16px;">${certBtn}</div>`:''}
   </div>`;
 }
