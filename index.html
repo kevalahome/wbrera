@@ -9811,22 +9811,27 @@ const CERT_LOOKUP = {};
 
 function getCertificateForProject(reraNo) {
   if (!reraNo) return null;
-  const key = reraNo.replace(/[\/\-]/g, '').toUpperCase();
-  return CERT_LOOKUP[key] || null;
-}
-function performSearch() {
-  const q = S.query.toLowerCase();
-  let results = S.data.filter(p =>
-    p.name.toLowerCase().includes(q) ||
-    p.rera.toLowerCase().includes(q) ||
-    p.id.toLowerCase().includes(q)
-  );
-  if (S.filter === 'active')  results = results.filter(p => p.s === 'A');
-  if (S.filter === 'revoked') results = results.filter(p => p.s === 'R');
-  S.allResults = results;
-  S.displayCount = PAGE_SIZE;
-  renderResults();
-  addHistory(S.query);
+  // Normalize: remove all separators for matching
+  const key = reraNo.replace(/[\/\-_\.\s]/g, '').toUpperCase();
+  
+  // Direct match
+  if (CERT_LOOKUP[key]) return CERT_LOOKUP[key];
+  
+  // Try partial match (handle NO vs NOR, etc.)
+  for (const [certKey, cert] of Object.entries(CERT_LOOKUP)) {
+    if (key.includes(certKey) || certKey.includes(key)) {
+      return cert;
+    }
+    // Try matching just the numeric parts
+    const keyNums = key.match(/\d+/g) || [];
+    const certNums = certKey.match(/\d+/g) || [];
+    if (keyNums.length >= 2 && certNums.length >= 2 &&
+        keyNums[keyNums.length-1] === certNums[certNums.length-1] &&
+        keyNums[keyNums.length-2] === certNums[certNums.length-2]) {
+      return cert;
+    }
+  }
+  return null;
 }
 
 function clearSearch() {
