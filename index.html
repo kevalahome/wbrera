@@ -632,7 +632,56 @@ async function loadData() {
     return false;
   }
 }
+// ─── RISK ENGINE ──────────────────────────────────────
+function parseDate(str) {
+  if (!str) return null;
+  const parts = str.split('-');
+  if (parts.length !== 3) return null;
+  return new Date(parts[2], parts[1] - 1, parts[0]);
+}
 
+function getRisk(project, cert) {
+  const now = new Date();
+  const regDate = parseDate(project.reg);
+  const compDate = parseDate(project.comp);
+
+  // 1. Revoked
+  if (project.s === 'R') {
+    return { level: 'HIGH', cls: 'flag-danger', icon: '🔴', label: 'High Risk', reason: 'Project registration is revoked. Do not proceed without legal advice.' };
+  }
+
+  // 2. Completion date in the past
+  if (compDate && compDate < now) {
+    return { level: 'HIGH', cls: 'flag-danger', icon: '🔴', label: 'High Risk', reason: 'Completion date has passed. Verify current status with the developer.' };
+  }
+
+  // 3. Not started + registered over 1 year ago
+  if (cert && cert.project_status === 'Not Started' && regDate) {
+    const monthsSinceReg = (now - regDate) / (1000 * 60 * 60 * 24 * 30);
+    if (monthsSinceReg > 12) {
+      return { level: 'HIGH', cls: 'flag-danger', icon: '🔴', label: 'High Risk', reason: 'Project registered over a year ago but construction has not started.' };
+    }
+  }
+
+  // 4. Very long timeline (>5 years)
+  if (compDate && regDate) {
+    const years = (compDate - regDate) / (1000 * 60 * 60 * 24 * 365);
+    if (years > 5) {
+      return { level: 'MEDIUM', cls: 'flag-warn', icon: '🟡', label: 'Moderate Risk', reason: 'Long completion timeline — verify progress before booking.' };
+    }
+  }
+
+  // 5. Very new project (<6 months since registration)
+  if (regDate) {
+    const monthsSinceReg = (now - regDate) / (1000 * 60 * 60 * 24 * 30);
+    if (monthsSinceReg < 6) {
+      return { level: 'MEDIUM', cls: 'flag-warn', icon: '🟡', label: 'Moderate Risk', reason: 'Early-stage project. Limited track record available.' };
+    }
+  }
+
+  // Default: LOW risk
+  return { level: 'LOW', cls: 'flag-ok', icon: '🟢', label: 'Low Risk', reason: 'No immediate risk signals detected. Still verify details before purchase.' };
+}
 function getCertificateForProject(reraNo) {
   if (!reraNo) return null;
   const key = reraNo.replace(/[\/\-_\.\s]/g, '').toUpperCase();
@@ -721,6 +770,7 @@ function loadMore() { S.displayCount += PAGE_SIZE; renderResults(); }
 function cardHTML(p, idx) {
   const saved = S.bookmarks.some(b => b.id === p.id);
   const cert = getCertificateForProject(p.rera);
+  const risk = getRisk(p, cert);
   const statusCls = p.s === 'A' ? 'a' : 'r';
   const statusLbl = p.s === 'A' ? '✅ Active' : '❌ Revoked';
   const dateField = p.s === 'R' ? `<div class="card-field"><div class="field-label">Revoke Date</div><div class="field-val">${p.rev || '—'}</div></div>` : `<div class="card-field"><div class="field-label">Reg. Date</div><div class="field-val">${p.reg || '—'}</div></div>`;
@@ -746,7 +796,10 @@ function cardHTML(p, idx) {
       ${dateField}
     </div>
     ${certHTML}
-    <div class="card-flags">${p.s==='R'?'<div class="flag flag-danger">🚨 Registration Revoked</div>':'<div class="flag flag-ok">✅ Registered & Active</div>'}</div>
+        <div class="card-flags">
+      <div class="flag ${risk.cls}">${risk.icon} ${risk.label}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px;width:100%;">${risk.reason}</div>
+    </div>
     <div class="card-actions">
       <button class="btn-verify" onclick="verifyProject()">🛡️ Verify Official</button>
       <button class="btn-share" onclick="shareProject('${esc(p.name)}','${esc(p.rera)}')">📤 Share</button>
