@@ -834,7 +834,7 @@ function showToast(msg) { const t = document.getElementById('toast'); t.textCont
 
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('/wbrera/sw.js').catch(()=>{})); }
 
-/* Last data update: 2026-05-04 07:10 UTC | Approved: 4,251 | Rejected: 14 | Certs: 6 */
+/* Last data update: 2026-05-04 07:13 UTC | Approved: 4,251 | Rejected: 14 | Certs: 7 */
 async function init() {
   const t = localStorage.getItem('kvl_theme'); S.darkMode = t !== 'light'; applyTheme();
   try { S.bookmarks = JSON.parse(localStorage.getItem('kvl_bk')||'[]'); } catch(e) {}

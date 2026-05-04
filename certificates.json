@@ -118,5 +118,25 @@
     "basement_parking": "146",
     "project_status": "Not Started",
     "registration_date": "11/03/2025"
+  },
+  {
+    "filename": "WBRERAPNOR2026004195.pdf",
+    "rera_no": "WBRERA/P/NOR/2026/004195",
+    "project_name": "DTC Downtown Phase-1",
+    "project_address": "Project Details : **",
+    "developer_name": "",
+    "valid_from": "",
+    "valid_until": "",
+    "project_type": "Residential",
+    "land_area_sqm": "",
+    "builtup_area_sqm": "",
+    "carpet_area_sqm": "",
+    "total_units": "",
+    "open_parking": "207",
+    "covered_parking": "44",
+    "mechanical_parking": "44",
+    "basement_parking": "207",
+    "project_status": "Under Construction",
+    "registration_date": "25/03/2026"
   }
 ]
