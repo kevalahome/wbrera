@@ -678,7 +678,50 @@ function getRisk(project, cert) {
       return { level: 'MEDIUM', cls: 'flag-warn', icon: '🟡', label: 'Moderate Risk', reason: 'Early-stage project. Limited track record available.' };
     }
   }
+// ─── DEAL INTELLIGENCE ENGINE ────────────────────────
+const COST_EXTRA = { under_construction: 0.12, ready_to_move: 0.07, resale: 0.06 };
+const COST_APP_URL = 'https://kevalahome.github.io/wbcost';
+let dealPrice = null;
 
+function getDealScore(price, riskLevel, cert) {
+  if (!price || price <= 0) return null;
+  
+  const isUC = cert && cert.project_status === 'Not Started';
+  const extraCostPercent = isUC ? COST_EXTRA.under_construction : COST_EXTRA.ready_to_move;
+  const trueCost = price * (1 + extraCostPercent);
+  const extraAmount = trueCost - price;
+  
+  let score = 0;
+  if (isUC) score -= 2;
+  else score += 1;
+  if (riskLevel === 'HIGH') score -= 3;
+  if (riskLevel === 'MEDIUM') score -= 1;
+  if (riskLevel === 'LOW') score += 2;
+  
+  let dealLevel, dealCls, dealIcon, dealLabel, dealInsight;
+  if (score <= -2) {
+    dealLevel = 'BAD'; dealCls = 'flag-danger'; dealIcon = '🔴'; dealLabel = 'Bad Deal';
+    dealInsight = `You're likely paying ₹${Math.round(extraAmount/100000).toLocaleString('en-IN')}L extra in hidden costs. Combined with project risk, this needs careful re-evaluation.`;
+  } else if (score <= 1) {
+    dealLevel = 'AVERAGE'; dealCls = 'flag-warn'; dealIcon = '🟡'; dealLabel = 'Average Deal';
+    dealInsight = `Hidden costs add ~₹${Math.round(extraAmount/100000).toLocaleString('en-IN')}L. Some risk factors present — verify timelines before booking.`;
+  } else {
+    dealLevel = 'GOOD'; dealCls = 'flag-ok'; dealIcon = '🟢'; dealLabel = 'Good Deal';
+    dealInsight = `Lower hidden costs and project risk. True cost estimated at ₹${Math.round(trueCost/100000).toLocaleString('en-IN')}L. Still verify before purchase.`;
+  }
+  
+  return { dealLevel, dealCls, dealIcon, dealLabel, dealInsight, trueCost, extraAmount, isUC };
+}
+
+function showDealPopup(projectName, reraNo) {
+  const price = prompt(`💰 Deal Intelligence\n\nEnter expected property price for:\n${projectName}\n\nAmount (₹):`, '8000000');
+  if (!price || isNaN(price) || price < 100000) return;
+  
+  dealPrice = parseInt(price);
+  S.allResults = [...S.allResults];
+  renderResults();
+  showToast(`Deal evaluated for ₹${(dealPrice/100000).toFixed(1)}L`);
+}
   // Default: LOW risk
   return { level: 'LOW', cls: 'flag-ok', icon: '🟢', label: 'Low Risk', reason: 'No immediate risk signals detected. Still verify details before purchase.' };
 }
@@ -771,6 +814,7 @@ function cardHTML(p, idx) {
   const saved = S.bookmarks.some(b => b.id === p.id);
   const cert = getCertificateForProject(p.rera);
   const risk = getRisk(p, cert);
+  const deal = dealPrice ? getDealScore(dealPrice, risk.level, cert) : null;
   const statusCls = p.s === 'A' ? 'a' : 'r';
   const statusLbl = p.s === 'A' ? '✅ Active' : '❌ Revoked';
   const dateField = p.s === 'R' ? `<div class="card-field"><div class="field-label">Revoke Date</div><div class="field-val">${p.rev || '—'}</div></div>` : `<div class="card-field"><div class="field-label">Reg. Date</div><div class="field-val">${p.reg || '—'}</div></div>`;
@@ -800,9 +844,22 @@ function cardHTML(p, idx) {
       <div class="flag ${risk.cls}">${risk.icon} ${risk.label}</div>
       <div style="font-size:11px;color:var(--text3);margin-top:4px;width:100%;">${risk.reason}</div>
     </div>
+    ${deal ? `
+    <div style="padding:12px 16px;margin:0 16px;background:var(--bg2);border-radius:var(--radius-sm);border:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+        <span style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;">💰 Deal Intelligence</span>
+        <span class="flag ${deal.dealCls}" style="font-size:12px;">${deal.dealIcon} ${deal.dealLabel}</span>
+      </div>
+      <p style="font-size:12px;color:var(--text2);line-height:1.5;margin:0;">${deal.dealInsight}</p>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button onclick="showDealPopup('${esc(p.name)}','${esc(p.rera)}')" style="flex:1;padding:8px;background:var(--purple3);border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;">🔄 Change Price</button>
+        <button onclick="window.open('${COST_APP_URL}','_blank')" style="flex:1;padding:8px;background:var(--gold);border:none;border-radius:8px;color:#1a0a2e;font-size:12px;font-weight:600;cursor:pointer;">🧮 Full Cost Calc</button>
+      </div>
+    </div>` : ''}
     <div class="card-actions">
       <button class="btn-verify" onclick="verifyProject()">🛡️ Verify Official</button>
       <button class="btn-share" onclick="shareProject('${esc(p.name)}','${esc(p.rera)}')">📤 Share</button>
+      ${!dealPrice ? `<button class="btn-verify" style="flex:0.5;font-size:12px;" onclick="showDealPopup('${esc(p.name)}','${esc(p.rera)}')">💰 Evaluate Deal</button>` : ''}
     </div>
     ${certBtn?`<div style="padding:0 16px 16px;">${certBtn}</div>`:''}
   </div>`;
