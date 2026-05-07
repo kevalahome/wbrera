@@ -51,6 +51,31 @@ def normalize_rera_no(rera_no):
         return ""
     return re.sub(r'[/\-_\.]', '', rera_no).upper()
 
+def rename_pdf_with_rera(pdf_path, rera_no):
+    """Rename PDF file to use RERA registration number."""
+    if not rera_no:
+        return pdf_path
+    
+    # Create clean filename: WBRERA-P-KOL-2024-002162.pdf
+    clean_name = rera_no.replace('/', '-') + '.pdf'
+    new_path = os.path.join(os.path.dirname(pdf_path), clean_name)
+    
+    # Skip if already correct
+    if pdf_path == new_path:
+        return pdf_path
+    
+    # Skip if target already exists
+    if os.path.exists(new_path):
+        print(f"    ⚠️ Target exists: {clean_name}")
+        return pdf_path
+    
+    try:
+        os.rename(pdf_path, new_path)
+        print(f"    📝 Renamed: {os.path.basename(pdf_path)} → {clean_name}")
+        return new_path
+    except Exception as e:
+        print(f"    ❌ Rename failed: {e}")
+        return pdf_path
 def parse_certificate(text, tables, filename):
     """Parse certificate text and tables into structured data."""
     data = {
@@ -237,6 +262,11 @@ def main():
             continue
         
         data = parse_certificate(text, tables, pdf_file.name)
+        if data.get("rera_no"):
+            new_path = rename_pdf_with_rera(pdf_file, data["rera_no"])
+            if new_path != str(pdf_file):
+                pdf_file = Path(new_path)
+                data["filename"] = os.path.basename(new_path)
         
         if data["rera_no"] or data["project_name"]:
             certificates.append(data)
