@@ -180,6 +180,8 @@ body.light .link-name { color: var(--text); }
 .modal-buttons button{flex:1;padding:13px;border:none;border-radius:var(--radius-xs);font-size:var(--fs-md);font-weight:700;cursor:pointer}
 .btn-primary{background:linear-gradient(135deg,var(--purple3),var(--pink2));color:#fff}
 .btn-secondary{background:var(--card2);border:1.5px solid var(--border);color:var(--text2)}
+/* Card details divider */
+.card-details-divider{margin:0 16px 10px;border:none;border-top:1px solid var(--border)}
 @media(min-width:500px){.card-grid{grid-template-columns:1fr 1fr 1fr}}
 </style>
 </head>
@@ -188,10 +190,9 @@ body.light .link-name { color: var(--text); }
 <header class="header">
   <div class="header-inner">
     <div class="logo">
-      <img src="logo.jpg" alt="Kevala Home" style="width:42px;height:42px;border-radius:13px;object-fit:cover" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'">
-      <div class="logo-mark" id="logoFallback" style="display:none">KH</div>
-      <div><div class="logo-name">Kevala Home</div><div class="logo-tag">West Bengal RERA</div></div>
-    </div>
+  <img src="logo.jpg" alt="Kevala Home" style="width:42px;height:42px;border-radius:13px;object-fit:cover">
+  <div><div class="logo-name">Kevala Home</div><div class="logo-tag">West Bengal RERA</div></div>
+</div>
     <div class="header-actions">
       <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
       <button class="icon-btn" onclick="showChecklist()">📋</button>
@@ -370,6 +371,9 @@ function getCertificateForProject(reraNo){
   return null;
 }
 
+function sqmToSqft(sqm){if(!sqm)return null;return Math.round(parseFloat(sqm)*10.764).toLocaleString('en-IN')}
+function fmtNum(n){if(!n&&n!==0)return null;return parseInt(n).toLocaleString('en-IN')}
+
 function hl(t,q){if(!q||q.length<2||!t)return t||'';try{return t.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<mark>$1</mark>')}catch(e){return t}}
 function esc(s){return(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}
 
@@ -427,6 +431,51 @@ function cardHTML(p,idx){
   const saved=S.bookmarks.some(b=>b.id===p.id),cert=getCertificateForProject(p.rera);
   const sc=p.s==='A'?'a':'r',sl=p.s==='A'?'✅ Active':'❌ Revoked';
   const df=p.s==='R'?`<div class="card-field"><div class="field-label">Revoke Date</div><div class="field-val">${p.rev||'—'}</div></div>`:`<div class="card-field"><div class="field-label">Reg. Date</div><div class="field-val">${p.reg||'—'}</div></div>`;
+
+  // --- Additional project details from JSON ---
+  const carpetSqft = sqmToSqft(p.carpet_sqm);
+  const builtupSqft = sqmToSqft(p.builtup_sqm);
+  const landSqft = sqmToSqft(p.land_sqm);
+
+  // Row 1: District + PIN
+  const districtField = (p.district||p.pin) ? `<div class="card-field">
+    <div class="field-label">📍 District</div>
+    <div class="field-val">${p.district||'—'}${p.pin?` · ${p.pin}`:''}` + `</div></div>` : '';
+
+  // Row 1b: Project Type
+  const typeField = p.type ? `<div class="card-field">
+    <div class="field-label">🏷️ Type</div>
+    <div class="field-val">${p.type}</div></div>` : '';
+
+  // Row 2: Units + Parking
+  const unitsField = (p.units||p.parking) ? `<div class="card-field">
+    <div class="field-label">🏠 Units</div>
+    <div class="field-val">${p.units ? fmtNum(p.units)+' units' : '—'}${p.parking ? ` · 🅿️ ${fmtNum(p.parking)}` : ''}</div></div>` : '';
+
+  // Row 2b: Construction Status
+  const statusDetailField = p.status_detail ? `<div class="card-field">
+    <div class="field-label">🏗️ Work Status</div>
+    <div class="field-val">${p.status_detail}</div></div>` : '';
+
+  // Row 3: Area fields (carpet + builtup + land in one span2 cell)
+  let areaRows = '';
+  if(carpetSqft || builtupSqft || landSqft){
+    const parts=[];
+    if(carpetSqft) parts.push(`<span style="margin-right:12px">🛋️ <strong>Carpet:</strong> ${carpetSqft} sq ft</span>`);
+    if(builtupSqft) parts.push(`<span style="margin-right:12px">🏢 <strong>Built-up:</strong> ${builtupSqft} sq ft</span>`);
+    if(landSqft) parts.push(`<span>🌳 <strong>Land:</strong> ${landSqft} sq ft</span>`);
+    areaRows = `<div class="card-field span2">
+      <div class="field-label">📐 Areas</div>
+      <div class="field-val" style="display:flex;flex-wrap:wrap;gap:4px 0">${parts.join('')}</div>
+    </div>`;
+  }
+
+  // Developer / promoter address
+  const addrField = p.addr ? `<div class="card-field span2">
+    <div class="field-label">🏢 Promoter</div>
+    <div class="field-val" style="word-break:break-word">${p.addr}</div></div>` : '';
+
+  // Cert extras (from certificates.json)
   let certHTML='',certBtn='';
   if(cert){
     const d=[];
@@ -437,22 +486,35 @@ function cardHTML(p,idx){
     if(d.length)certHTML=`<div class="card-flags">${d.map(x=>`<div class="flag flag-info">${x}</div>`).join('')}</div>`;
     certBtn=`<button class="btn-cert" onclick="viewCert('${esc(cert.rera_no)}')">📄 View RERA Certificate</button>`;
   }
+
   const statusFlag=p.s==='R'?'<div class="flag flag-danger">🚨 Registration Revoked</div>':'<div class="flag flag-ok">✅ Registered & Active</div>';
+
   return `<div class="proj-card${p.s==='R'?' revoked-card':''}">
     <div class="card-top"><div class="card-name-block"><div class="card-name">${hl(p.name,S.query)}</div><div class="card-id">🆔 ${p.id}</div></div><button class="bkmark-btn${saved?' saved':''}" onclick="toggleSave('${esc(p.id)}')">🔖</button></div>
-    <div class="card-grid"><div class="card-field span2"><div class="field-label">Registration No.</div><div class="field-val">${hl(p.rera,S.query)}</div></div><div class="card-field"><div class="field-label">Status</div><div class="field-val"><span class="status-badge ${sc}">${sl}</span></div></div><div class="card-field"><div class="field-label">Completion</div><div class="field-val">${p.comp||'—'}</div></div>${df}</div>
+    <div class="card-grid">
+      <div class="card-field span2"><div class="field-label">Registration No.</div><div class="field-val">${hl(p.rera,S.query)}</div></div>
+      <div class="card-field"><div class="field-label">Status</div><div class="field-val"><span class="status-badge ${sc}">${sl}</span></div></div>
+      <div class="card-field"><div class="field-label">Completion</div><div class="field-val">${p.comp||'—'}</div></div>
+      ${df}
+      ${districtField}
+      ${typeField}
+      ${unitsField}
+      ${statusDetailField}
+      ${areaRows}
+      ${addrField}
+    </div>
     ${certHTML}
     <div class="card-flags">${statusFlag}</div>
     <div class="card-actions">
       <button class="btn-verify" onclick="window.open('${PORTAL}','_blank')">🛡️ Verify Official</button>
       <button class="btn-share" onclick="shareProject('${esc(p.name)}','${esc(p.rera)}')">📤 Share</button>
     </div>
-        <div class="feedback-row" id="fb-${esc(p.id)}">
+    <div class="feedback-row" id="fb-${esc(p.id)}">
       <span>Was this helpful?</span>
       <button class="feedback-yes" onclick="feedbackYes('${esc(p.id)}','${esc(p.name)}')">👍 Yes</button>
       <button class="feedback-no" onclick="feedbackNo('${esc(p.id)}','${esc(p.name)}')">📧 No</button>
     </div>
-<div class="card-actions"><button class="btn-cost" onclick="showCostModal()">🧮 Total Cost Calculator</button></div>
+    <div class="card-actions"><button class="btn-cost" onclick="showCostModal()">🧮 Total Cost Calculator</button></div>
     ${certBtn?`<div style="padding:0 16px 16px">${certBtn}</div>`:''}
   </div>`;
 }
