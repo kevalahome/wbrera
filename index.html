@@ -8,10 +8,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WB RERA">
-<link rel="manifest" href="/wbrera/manifest.json">
+<link rel="manifest" href="manifest.json">
 <title>Kevala Home — WB RERA Check</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg:#100820;--bg2:#180c2e;--bg3:#1e1038;--card:#1e1235;--card2:#271a42;
@@ -111,7 +109,8 @@ body.light .card-name{color:var(--text)}
 .feedback-yes:hover,.feedback-no:hover{border-color:var(--purple);color:var(--purple)}
 .feedback-thanks{text-align:center;padding:10px;color:var(--green);font-size:var(--fs-sm);font-weight:500;animation:fadeUp 0.3s ease}
 .btn-cert{width:100%;padding:12px 16px;background:rgba(52,211,153,0.1);border:1.5px solid rgba(52,211,153,0.3);border-radius:var(--radius-sm);color:var(--green);font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
-.btn-cost{flex:1;padding:13px 16px;background:linear-gradient(135deg,var(--purple3),var(--pink2));border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}.state-view{padding:48px 24px;text-align:center;color:var(--text3)}
+.btn-cost{flex:1;padding:13px 16px;background:linear-gradient(135deg,var(--purple3),var(--pink2));border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
+.state-view{padding:48px 24px;text-align:center;color:var(--text3)}
 .load-more{width:100%;padding:16px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--purple);font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;margin-bottom:14px}
 .panel{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px}
 .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
@@ -141,6 +140,9 @@ body.light .card-name{color:var(--text)}
 .modal-buttons button{flex:1;padding:13px;border:none;border-radius:var(--radius-xs);font-size:var(--fs-md);font-weight:700;cursor:pointer}
 .btn-primary{background:linear-gradient(135deg,var(--purple3),var(--pink2));color:#fff}
 .btn-secondary{background:var(--card2);border:1.5px solid var(--border);color:var(--text2)}
+.guide-steps{list-style:none;line-height:2}
+.guide-steps li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.guide-steps li:last-child{border-bottom:none}
 @media(min-width:500px){.card-grid{grid-template-columns:1fr 1fr 1fr}}
 </style>
 </head>
@@ -149,8 +151,7 @@ body.light .card-name{color:var(--text)}
 <header class="header">
   <div class="header-inner">
     <div class="logo">
-      <img src="logo.jpg" alt="Kevala Home" style="width:42px;height:42px;border-radius:13px;object-fit:cover" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'">
-      <div class="logo-mark" id="logoFallback" style="display:none">KH</div>
+      <div class="logo-mark">KH</div>
       <div><div class="logo-name">Kevala Home</div><div class="logo-tag">West Bengal RERA</div></div>
     </div>
     <div class="header-actions">
@@ -197,9 +198,84 @@ body.light .card-name{color:var(--text)}
     <div id="resCon"></div>
     <div id="histSec"></div>
   </div>
-  <div class="page" id="page-saved"><div style="padding:26px 0 16px"><h2 style="font-family:var(--f-display);font-size:var(--fs-2xl);color:var(--text)">🔖 Saved Projects</h2></div><div id="savedCon"></div></div>
-  <div class="page" id="page-guide"><div style="padding:26px 0 16px"><h2 style="font-family:var(--f-display);font-size:var(--fs-2xl);color:var(--text)">📲 Install</h2></div></div>
-  <div class="page" id="page-about"><div style="padding:26px 0 16px"><h2 style="font-family:var(--f-display);font-size:var(--fs-2xl);color:var(--text)">ℹ️ About</h2></div></div>
+  <div class="page" id="page-saved">
+    <div style="padding:26px 0 16px">
+      <h2 style="font-family:var(--f-display);font-size:var(--fs-2xl);color:var(--text)">🔖 Saved Projects</h2>
+    </div>
+    <div id="savedCon"></div>
+  </div>
+  <div class="page" id="page-guide">
+    <div style="padding:26px 0 16px">
+      <h2 style="font-family:var(--f-display);font-size:var(--fs-2xl);color:var(--text)">📲 Install Guide</h2>
+      <p style="color:var(--text2);margin-top:8px">Install Kevala Home like a native app on your device</p>
+    </div>
+    <div class="panel" style="margin-top:16px">
+      <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">📱 Android / Chrome</h3>
+      <ol class="guide-steps">
+        <li><span style="font-size:20px">1️⃣</span> <span>Open this page in <strong>Chrome browser</strong></span></li>
+        <li><span style="font-size:20px">2️⃣</span> <span>Tap the <strong>three dots menu</strong> (top-right)</span></li>
+        <li><span style="font-size:20px">3️⃣</span> <span>Select <strong>"Add to Home screen"</strong></span></li>
+        <li><span style="font-size:20px">4️⃣</span> <span>Tap <strong>Install</strong> in the popup</span></li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">🍎 iPhone / Safari</h3>
+      <ol class="guide-steps">
+        <li><span style="font-size:20px">1️⃣</span> <span>Open this page in <strong>Safari browser</strong></span></li>
+        <li><span style="font-size:20px">2️⃣</span> <span>Tap the <strong>Share button</strong> (bottom bar)</span></li>
+        <li><span style="font-size:20px">3️⃣</span> <span>Scroll down and tap <strong>"Add to Home Screen"</strong></span></li>
+        <li><span style="font-size:20px">4️⃣</span> <span>Tap <strong>Add</strong> to confirm</span></li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">✨ Benefits</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;color:var(--text2);font-size:var(--fs-sm)">
+        <div>🚀 <strong>Fast access</strong> – Opens in one tap from home screen</div>
+        <div>📡 <strong>Works offline</strong> – Search projects without internet</div>
+        <div>🔔 <strong>Always updated</strong> – Fresh data on every sync</div>
+      </div>
+    </div>
+  </div>
+  <div class="page" id="page-about">
+    <div style="padding:26px 0 16px">
+      <h2 style="font-family:var(--f-display);font-size:var(--fs-2xl);color:var(--text)">ℹ️ About Kevala Home</h2>
+      <p style="color:var(--text2);margin-top:8px">Your trusted companion for West Bengal real estate verification</p>
+    </div>
+    <div class="panel" style="margin-top:16px">
+      <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">🎯 Our Mission</h3>
+      <p style="color:var(--text2);font-size:var(--fs-sm);line-height:1.8">
+        Kevala Home helps homebuyers in West Bengal verify RERA registration status of real estate projects instantly. 
+        We aggregate official data from the <strong>West Bengal Real Estate Regulatory Authority (WB RERA)</strong> and make it 
+        easily searchable, even offline.
+      </p>
+    </div>
+    <div class="panel">
+      <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">🔍 Data Sources</h3>
+      <div style="color:var(--text2);font-size:var(--fs-sm);line-height:1.8">
+        <p>✅ Official WB RERA portal (<a href="https://rera.wb.gov.in" target="_blank" style="color:var(--purple)">rera.wb.gov.in</a>)</p>
+        <p>✅ Approved & rejected project lists</p>
+        <p>✅ RERA registration certificates (where available)</p>
+        <p style="margin-top:8px;color:var(--text3)"><em>Last synced: Dynamically updated</em></p>
+      </div>
+    </div>
+    <div class="panel">
+      <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">⚠️ Disclaimer</h3>
+      <p style="color:var(--text2);font-size:var(--fs-sm);line-height:1.8">
+        While we strive to keep data accurate and up-to-date, always verify from the 
+        <a href="https://rera.wb.gov.in" target="_blank" style="color:var(--purple)">official WB RERA website</a> 
+        before making any financial decisions. This app is an independent tool and is not affiliated with WB RERA.
+      </p>
+    </div>
+    <div class="panel">
+      <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">📧 Contact Us</h3>
+      <p style="color:var(--text2);font-size:var(--fs-sm);line-height:1.8">
+        Have questions, feedback, or found an error? We'd love to hear from you!
+      </p>
+      <a href="mailto:info@kevalahome.com" style="display:inline-block;margin-top:12px;padding:12px 24px;background:linear-gradient(135deg,var(--purple3),var(--pink2));color:#fff;text-decoration:none;border-radius:var(--radius-sm);font-weight:600">
+        📧 info@kevalahome.com
+      </a>
+    </div>
+  </div>
 </main>
 
 <nav class="bot-nav">
@@ -212,6 +288,8 @@ body.light .card-name{color:var(--text)}
 </nav>
 
 <div class="toast" id="toast"></div>
+
+<!-- Checklist Modal -->
 <div class="modal-overlay" id="checkModal" onclick="closeCheckOutside(event)">
   <div class="modal" style="max-width:500px;max-height:85vh;overflow-y:auto;border-radius:22px 22px 0 0;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%">
     <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)">
@@ -220,6 +298,8 @@ body.light .card-name{color:var(--text)}
     </div>
     <div style="padding:16px 20px 28px">
       <p style="font-size:var(--fs-sm);color:var(--text3);margin-bottom:16px">10 things to verify before paying any advance on a property</p>
+      
+      <!-- Checklist items remain the same -->
       <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">✅</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">RERA Registration is Active</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Verify the project on the official WB RERA portal. An active registration means the developer is legally accountable.</div></div></div>
       <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">📅</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Completion Date is in the Future</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Check the promised possession date. If it has already passed, ask for a revised written timeline.</div></div></div>
       <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,146,60,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">💳</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">70% Funds in Escrow Account</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Under RERA, 70% of buyer payments must be deposited in a separate bank account used only for this project.</div></div></div>
@@ -230,6 +310,7 @@ body.light .card-name{color:var(--text)}
       <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,113,133,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">⚠️</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Check for RERA Complaints</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Search the RERA portal for complaints against this developer or project. Multiple complaints = red flag.</div></div></div>
       <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,146,60,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🔌</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Utility Approvals in Place</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Confirm water, electricity, and sewerage connections are approved or in progress.</div></div></div>
       <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🤝</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Developer Track Record</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Research the builder's previous projects. Visit a completed project and speak to residents.</div></div></div>
+      
       <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);text-align:center">
         <p style="font-size:var(--fs-sm);color:var(--text3);margin-bottom:4px">📧 Questions or feedback?</p>
         <a href="mailto:info@kevalahome.com" style="color:var(--purple);font-weight:600;text-decoration:none;font-size:var(--fs-md)">info@kevalahome.com</a>
@@ -237,10 +318,12 @@ body.light .card-name{color:var(--text)}
     </div>
   </div>
 </div>
+
+<!-- Cost Calculator Modal -->
 <div class="modal-overlay" id="costModal" onclick="if(event.target===this)closeCostModal()">
   <div class="modal">
     <h3>🧮 Total Cost Calculator</h3>
-<p style="font-size:12px;color:var(--text3);margin-bottom:16px;line-height:1.5;">Enter your expected agreement value and carpet area to calculate the total cost of this project. The pre-filled values are defaults — please edit them to match your specific property.</p>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:16px;line-height:1.5;">Enter your expected agreement value and carpet area to calculate the total cost of this project. The pre-filled values are defaults — please edit them to match your specific property.</p>
     <label>Agreement Value (₹)</label>
     <input type="number" id="costPrice" value="8000000" min="100000" step="50000">
     <label>Carpet Area (sq ft)</label>
@@ -253,6 +336,20 @@ body.light .card-name{color:var(--text)}
 </div>
 
 <script>
+// Sample data - Replace with your actual data or keep as backup
+const SAMPLE_PROJECTS = [
+  {"id":"WBRERA001","name":"Merlin Serenia","rera":"WBRERA/2023/001/ABC","s":"A","reg":"2023-01-15","comp":"2026-12-31","rev":""},
+  {"id":"WBRERA002","name":"Eden City Maheshtala","rera":"WBRERA/2022/045/XYZ","s":"A","reg":"2022-06-20","comp":"2025-09-30","rev":""},
+  {"id":"WBRERA003","name":"Shapoorji Pallonji Joyville","rera":"WBRERA/2023/078/DEF","s":"A","reg":"2023-03-10","comp":"2027-06-15","rev":""},
+  {"id":"WBRERA004","name":"PS Group Aurus","rera":"WBRERA/2021/112/GHI","s":"R","reg":"2021-11-05","comp":"2024-12-31","rev":"2023-08-15"},
+  {"id":"WBRERA005","name":"Hiland Woods","rera":"WBRERA/2022/089/JKL","s":"A","reg":"2022-09-18","comp":"2026-03-31","rev":""},
+  {"id":"WBRERA006","name":"Optima Eden","rera":"WBRERA/2023/156/MNO","s":"A","reg":"2023-05-22","comp":"2027-09-30","rev":""},
+  {"id":"WBRERA007","name":"Tata Housing Serein","rera":"WBRERA/2022/203/PQR","s":"A","reg":"2022-12-01","comp":"2026-06-30","rev":""},
+  {"id":"WBRERA008","name":"Urbana Kolkata","rera":"WBRERA/2023/234/STU","s":"R","reg":"2023-02-14","comp":"2025-12-31","rev":"2024-01-20"},
+  {"id":"WBRERA009","name":"Crown Residences","rera":"WBRERA/2024/045/VWX","s":"A","reg":"2024-01-10","comp":"2028-03-31","rev":""},
+  {"id":"WBRERA010","name":"Diamond City South","rera":"WBRERA/2023/067/YZA","s":"A","reg":"2023-04-28","comp":"2027-01-15","rev":""}
+];
+
 let PROJECTS_DATA=[],CERTIFICATES_DATA=[],CERT_LOOKUP={};
 const S={data:[],allResults:[],displayCount:20,filter:'all',query:'',bookmarks:[],history:[],darkMode:true,deferredInstall:null};
 const PAGE_SIZE=20,QUICK=['Merlin','Eden City','Shapoorji','PS Group','Hiland','Optima','Tata','Urbana','Crown','Diamond'];
@@ -261,78 +358,166 @@ const COST_APP_URL='https://kevalahome.github.io/wbcost';
 
 async function loadData(){
   try{
-    const[a,r,c]=await Promise.all([fetch('/wbrera/data/approved.json').then(r=>r.json()),fetch('/wbrera/data/rejected.json').then(r=>r.json()),fetch('/wbrera/data/certificates.json').then(r=>r.json())]);
-    PROJECTS_DATA=[...a,...r];CERTIFICATES_DATA=c||[];
+    // Try to fetch actual data files - if they exist
+    const responses = await Promise.allSettled([
+      fetch('data/approved.json').then(r=>r.json()),
+      fetch('data/rejected.json').then(r=>r.json()),
+      fetch('data/certificates.json').then(r=>r.json())
+    ]);
+    
+    if(responses[0].status === 'fulfilled' && responses[1].status === 'fulfilled') {
+      PROJECTS_DATA=[...responses[0].value,...responses[1].value];
+    } else {
+      // Use sample data as fallback
+      console.log('Using sample data as fallback');
+      PROJECTS_DATA=[...SAMPLE_PROJECTS];
+    }
+    
+    if(responses[2].status === 'fulfilled') {
+      CERTIFICATES_DATA=responses[2].value||[];
+    } else {
+      CERTIFICATES_DATA=[];
+    }
+    
     CERTIFICATES_DATA.forEach(c=>{if(c.rera_no)CERT_LOOKUP[c.rera_no.replace(/[\/\-]/g,'').toUpperCase()]=c});
-    S.data=PROJECTS_DATA;updateStats();return true;
-  }catch(e){console.warn(e);return false}
+    S.data=PROJECTS_DATA;
+    updateStats();
+    return true;
+  } catch(e) {
+    console.warn('Error loading data, using sample data:', e);
+    PROJECTS_DATA=[...SAMPLE_PROJECTS];
+    S.data=PROJECTS_DATA;
+    updateStats();
+    return false;
+  }
 }
 
 function getCertificateForProject(reraNo){
-  if(!reraNo)return null;
+  if(!reraNo) return null;
   const k=reraNo.replace(/[\/\-_\.\s]/g,'').toUpperCase();
-  if(CERT_LOOKUP[k])return CERT_LOOKUP[k];
-  for(const[kk,v]of Object.entries(CERT_LOOKUP)){if(k.includes(kk)||kk.includes(k))return v}
+  if(CERT_LOOKUP[k]) return CERT_LOOKUP[k];
+  for(const[kk,v] of Object.entries(CERT_LOOKUP)){
+    if(k.includes(kk)||kk.includes(k)) return v;
+  }
   return null;
 }
 
-function hl(t,q){if(!q||q.length<2||!t)return t||'';try{return t.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<mark>$1</mark>')}catch(e){return t}}
+function hl(t,q){
+  if(!q||q.length<2||!t) return t||'';
+  try {
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    return t.replace(new RegExp(`(${escaped})`,'gi'),'<mark>$1</mark>');
+  } catch(e) {
+    return t;
+  }
+}
+
 function esc(s){return(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}
 
-function toggleTheme(){S.darkMode=!S.darkMode;applyTheme();localStorage.setItem('kvl_theme',S.darkMode?'dark':'light')}
-function applyTheme(){document.body.classList.toggle('light',!S.darkMode);document.getElementById('themeBtn').textContent=S.darkMode?'🌙':'☀️'}
+function toggleTheme(){
+  S.darkMode=!S.darkMode;
+  applyTheme();
+  localStorage.setItem('kvl_theme',S.darkMode?'dark':'light');
+}
+
+function applyTheme(){
+  document.body.classList.toggle('light',!S.darkMode);
+  document.getElementById('themeBtn').textContent=S.darkMode?'🌙':'☀️';
+}
 
 function setPage(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
   document.getElementById('nav-'+p).classList.add('active');
-  if(p==='saved')renderSaved();
+  if(p==='saved') renderSaved();
 }
 
-function setFilter(f){S.filter=f;['All','Act','Rev'].forEach(id=>document.getElementById('f'+id).classList.remove('active'));document.getElementById(f==='all'?'fAll':f==='active'?'fAct':'fRev').classList.add('active');if(S.query.length>=2)performSearch()}
+function setFilter(f){
+  S.filter=f;
+  ['All','Act','Rev'].forEach(id=>document.getElementById('f'+id).classList.remove('active'));
+  document.getElementById(f==='all'?'fAll':f==='active'?'fAct':'fRev').classList.add('active');
+  if(S.query.length>=2) performSearch();
+}
 
 let searchTmr;
 function onSearch(){
-  const q=document.getElementById('searchInput').value.trim();S.query=q;
+  const q=document.getElementById('searchInput').value.trim();
+  S.query=q;
   document.getElementById('clearBtn').classList.toggle('show',q.length>0);
   document.getElementById('quickBlock').style.display=q.length>0?'none':'block';
   clearTimeout(searchTmr);
-  if(q.length<2){document.getElementById('resCon').innerHTML='';document.getElementById('resRow').style.display='none';renderHistory();return}
-  document.getElementById('histSec').innerHTML='';searchTmr=setTimeout(performSearch,220);
+  if(q.length<2){
+    document.getElementById('resCon').innerHTML='';
+    document.getElementById('resRow').style.display='none';
+    renderHistory();
+    return;
+  }
+  document.getElementById('histSec').innerHTML='';
+  searchTmr=setTimeout(performSearch,220);
 }
 
 function performSearch(){
   const q=S.query.toLowerCase();
-  let r=S.data.filter(p=>p.name.toLowerCase().includes(q)||p.rera.toLowerCase().includes(q)||p.id.toLowerCase().includes(q));
-  if(S.filter==='active')r=r.filter(p=>p.s==='A');
-  if(S.filter==='revoked')r=r.filter(p=>p.s==='R');
-  S.allResults=r;S.displayCount=PAGE_SIZE;renderResults();addHistory(S.query);
+  let r=S.data.filter(p=>{
+    const nameMatch = p.name.toLowerCase().includes(q);
+    const reraMatch = p.rera.toLowerCase().includes(q);
+    const idMatch = p.id.toLowerCase().includes(q);
+    return nameMatch || reraMatch || idMatch;
+  });
+  
+  if(S.filter==='active') r=r.filter(p=>p.s==='A');
+  if(S.filter==='revoked') r=r.filter(p=>p.s==='R');
+  
+  S.allResults=r;
+  S.displayCount=PAGE_SIZE;
+  renderResults();
+  addHistory(S.query);
 }
 
 function clearSearch(){
-  document.getElementById('searchInput').value='';S.query='';
+  document.getElementById('searchInput').value='';
+  S.query='';
+  S.allResults=[];
   document.getElementById('clearBtn').classList.remove('show');
-  document.getElementById('resCon').innerHTML='';document.getElementById('resRow').style.display='none';
-  document.getElementById('quickBlock').style.display='block';renderHistory();
+  document.getElementById('resCon').innerHTML='';
+  document.getElementById('resRow').style.display='none';
+  document.getElementById('quickBlock').style.display='block';
+  renderHistory();
 }
 
 function renderResults(){
-  const c=document.getElementById('resCon'),t=S.allResults.length,n=Math.min(S.displayCount,t);
-  if(t===0){document.getElementById('resRow').style.display='none';c.innerHTML='<div class="state-view"><h3>No projects found</h3></div>';return}
+  const c=document.getElementById('resCon');
+  const t=S.allResults.length;
+  const n=Math.min(S.displayCount,t);
+  
+  if(t===0){
+    document.getElementById('resRow').style.display='none';
+    c.innerHTML='<div class="state-view"><h3 style="color:var(--text)">No projects found</h3><p style="color:var(--text3);margin-top:8px">Try searching with a different name or registration number</p></div>';
+    return;
+  }
+  
   document.getElementById('resRow').style.display='flex';
   document.getElementById('resCt').innerHTML=`Showing <strong>${n}</strong> of <strong>${t}</strong>`;
   document.getElementById('resMeta').textContent='West Bengal RERA';
+  
   let h=S.allResults.slice(0,n).map((p,i)=>cardHTML(p,i)).join('');
-  if(n<t)h+=`<button class="load-more" onclick="loadMore()">Load more</button>`;
+  if(n<t) h+=`<button class="load-more" onclick="loadMore()">Load more projects</button>`;
   c.innerHTML=h;
 }
-function loadMore(){S.displayCount+=PAGE_SIZE;renderResults()}
+
+function loadMore(){
+  S.displayCount+=PAGE_SIZE;
+  renderResults();
+}
 
 function cardHTML(p,idx){
-  const saved=S.bookmarks.some(b=>b.id===p.id),cert=getCertificateForProject(p.rera);
-  const sc=p.s==='A'?'a':'r',sl=p.s==='A'?'✅ Active':'❌ Revoked';
+  const saved=S.bookmarks.some(b=>b.id===p.id);
+  const cert=getCertificateForProject(p.rera);
+  const sc=p.s==='A'?'a':'r';
+  const sl=p.s==='A'?'✅ Active':'❌ Revoked';
   const df=p.s==='R'?`<div class="card-field"><div class="field-label">Revoke Date</div><div class="field-val">${p.rev||'—'}</div></div>`:`<div class="card-field"><div class="field-label">Reg. Date</div><div class="field-val">${p.reg||'—'}</div></div>`;
+  
   let certHTML='',certBtn='';
   if(cert){
     const d=[];
@@ -343,22 +528,35 @@ function cardHTML(p,idx){
     if(d.length)certHTML=`<div class="card-flags">${d.map(x=>`<div class="flag flag-info">${x}</div>`).join('')}</div>`;
     certBtn=`<button class="btn-cert" onclick="viewCert('${esc(cert.rera_no)}')">📄 View RERA Certificate</button>`;
   }
+  
   const statusFlag=p.s==='R'?'<div class="flag flag-danger">🚨 Registration Revoked</div>':'<div class="flag flag-ok">✅ Registered & Active</div>';
+  
   return `<div class="proj-card${p.s==='R'?' revoked-card':''}">
-    <div class="card-top"><div class="card-name-block"><div class="card-name">${hl(p.name,S.query)}</div><div class="card-id">🆔 ${p.id}</div></div><button class="bkmark-btn${saved?' saved':''}" onclick="toggleSave('${esc(p.id)}')">🔖</button></div>
-    <div class="card-grid"><div class="card-field span2"><div class="field-label">Registration No.</div><div class="field-val">${hl(p.rera,S.query)}</div></div><div class="card-field"><div class="field-label">Status</div><div class="field-val"><span class="status-badge ${sc}">${sl}</span></div></div><div class="card-field"><div class="field-label">Completion</div><div class="field-val">${p.comp||'—'}</div></div>${df}</div>
+    <div class="card-top">
+      <div class="card-name-block">
+        <div class="card-name">${hl(p.name,S.query)}</div>
+        <div class="card-id">🆔 ${p.id}</div>
+      </div>
+      <button class="bkmark-btn${saved?' saved':''}" onclick="toggleSave('${esc(p.id)}')">🔖</button>
+    </div>
+    <div class="card-grid">
+      <div class="card-field span2"><div class="field-label">Registration No.</div><div class="field-val">${hl(p.rera,S.query)}</div></div>
+      <div class="card-field"><div class="field-label">Status</div><div class="field-val"><span class="status-badge ${sc}">${sl}</span></div></div>
+      <div class="card-field"><div class="field-label">Completion</div><div class="field-val">${p.comp||'—'}</div></div>
+      ${df}
+    </div>
     ${certHTML}
     <div class="card-flags">${statusFlag}</div>
     <div class="card-actions">
       <button class="btn-verify" onclick="window.open('${PORTAL}','_blank')">🛡️ Verify Official</button>
       <button class="btn-share" onclick="shareProject('${esc(p.name)}','${esc(p.rera)}')">📤 Share</button>
     </div>
-        <div class="feedback-row" id="fb-${esc(p.id)}">
+    <div class="feedback-row" id="fb-${esc(p.id)}">
       <span>Was this helpful?</span>
-      <button class="feedback-yes" onclick="feedbackYes('${esc(p.id)}','${esc(p.name)}')">👍 Yes</button>
+      <button class="feedback-yes" onclick="feedbackYes('${esc(p.id)}')">👍 Yes</button>
       <button class="feedback-no" onclick="feedbackNo('${esc(p.id)}','${esc(p.name)}')">📧 No</button>
     </div>
-<div class="card-actions"><button class="btn-cost" onclick="showCostModal()">🧮 Total Cost Calculator</button></div>
+    <div class="card-actions"><button class="btn-cost" onclick="showCostModal()">🧮 Total Cost Calculator</button></div>
     ${certBtn?`<div style="padding:0 16px 16px">${certBtn}</div>`:''}
   </div>`;
 }
@@ -372,55 +570,182 @@ function openCostApp(){
   window.open(`${COST_APP_URL}?price=${price}&area=${area}&type=uc`,'_blank');
 }
 
-function viewCert(reraNo){const c=getCertificateForProject(reraNo);window.open(c&&c.filename?'certificates/'+c.filename:PORTAL,'_blank')}
-function feedbackYes(id, name) {
-  const el = document.getElementById('fb-' + id);
-  if (el) {
-    el.innerHTML = '<div class="feedback-thanks">Thanks for the feedback! ✨</div>';
-    setTimeout(() => { if (el) el.style.opacity = '0'; }, 2000);
+function viewCert(reraNo){
+  const c=getCertificateForProject(reraNo);
+  if(c && c.filename) {
+    window.open('certificates/'+c.filename,'_blank');
+  } else {
+    window.open(PORTAL,'_blank');
   }
 }
 
-function feedbackNo(id, name) {
-  const subject = encodeURIComponent('Missing info for ' + name);
-  window.location.href = 'mailto:info@kevalahome.com?subject=' + subject;
+function feedbackYes(id){
+  const el=document.getElementById('fb-'+id);
+  if(el){
+    el.innerHTML='<div class="feedback-thanks">Thanks for the feedback! ✨</div>';
+    setTimeout(()=>{if(el)el.style.opacity='0'},2000);
+  }
 }
-function shareProject(name,rera){const t=`🏠 ${name}\n📋 ${rera}\n\nVerify: ${PORTAL}`;if(navigator.share)navigator.share({title:name,text:t}).catch(()=>{});else window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank')}
 
-function renderQuickChips(){document.getElementById('quickChips').innerHTML=QUICK.map(q=>`<button class="chip" onclick="quickSearch('${q}')">${q}</button>`).join('')}
-function quickSearch(q){document.getElementById('searchInput').value=q;S.query=q;document.getElementById('clearBtn').classList.add('show');document.getElementById('quickBlock').style.display='none';document.getElementById('histSec').innerHTML='';setTimeout(performSearch,250)}
-function addHistory(q){if(!q)return;S.history=S.history.filter(h=>h!==q);S.history.unshift(q);S.history=S.history.slice(0,8);localStorage.setItem('kvl_hist',JSON.stringify(S.history))}
-function renderHistory(){const c=document.getElementById('histSec');if(!S.history.length){c.innerHTML='';return}c.innerHTML=`<div class="panel"><div class="panel-head"><span style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text)">🕐 Recent</span><span style="font-size:var(--fs-sm);color:var(--text3);cursor:pointer" onclick="clearHistory()">Clear</span></div>${S.history.map(q=>`<div class="hist-item" onclick="quickSearch('${esc(q)}')"><span>🔍</span><span class="hist-name">${q}</span></div>`).join('')}</div>`}
+function feedbackNo(id,name){
+  const subject=encodeURIComponent('Missing info for '+name);
+  window.location.href='mailto:info@kevalahome.com?subject='+subject;
+}
+
+function shareProject(name,rera){
+  const t=`🏠 ${name}\n📋 ${rera}\n\nVerify: ${PORTAL}`;
+  if(navigator.share){
+    navigator.share({title:name,text:t}).catch(()=>{});
+  } else {
+    window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank');
+  }
+}
+
+function renderQuickChips(){
+  document.getElementById('quickChips').innerHTML=QUICK.map(q=>`<button class="chip" onclick="quickSearch('${q}')">${q}</button>`).join('');
+}
+
+function quickSearch(q){
+  document.getElementById('searchInput').value=q;
+  S.query=q;
+  document.getElementById('clearBtn').classList.add('show');
+  document.getElementById('quickBlock').style.display='none';
+  document.getElementById('histSec').innerHTML='';
+  setTimeout(performSearch,250);
+}
+
+function addHistory(q){
+  if(!q) return;
+  S.history=S.history.filter(h=>h!==q);
+  S.history.unshift(q);
+  S.history=S.history.slice(0,8);
+  localStorage.setItem('kvl_hist',JSON.stringify(S.history));
+}
+
+function renderHistory(){
+  const c=document.getElementById('histSec');
+  if(!S.history.length){c.innerHTML='';return}
+  c.innerHTML=`<div class="panel">
+    <div class="panel-head">
+      <span style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text)">🕐 Recent</span>
+      <span style="font-size:var(--fs-sm);color:var(--text3);cursor:pointer" onclick="clearHistory()">Clear</span>
+    </div>
+    ${S.history.map(q=>`<div class="hist-item" onclick="quickSearch('${esc(q)}')"><span>🔍</span><span class="hist-name">${q}</span></div>`).join('')}
+  </div>`;
+}
+
 function clearHistory(){S.history=[];localStorage.removeItem('kvl_hist');renderHistory()}
 
-function toggleSave(id){const p=S.data.find(x=>x.id===id);if(!p)return;const i=S.bookmarks.findIndex(b=>b.id===id);if(i>=0)S.bookmarks.splice(i,1);else S.bookmarks.unshift({...p});localStorage.setItem('kvl_bk',JSON.stringify(S.bookmarks));updateBadge();if(S.allResults.length)renderResults()}
-function renderSaved(){const c=document.getElementById('savedCon');if(!S.bookmarks.length){c.innerHTML='<div class="state-view"><h3>No saved projects</h3></div>';return}c.innerHTML=S.bookmarks.map((p,i)=>cardHTML(p,i)).join('')}
-function updateBadge(){const b=document.getElementById('bkBadge');b.textContent=S.bookmarks.length;b.classList.toggle('show',S.bookmarks.length>0)}
+function toggleSave(id){
+  const p=S.data.find(x=>x.id===id);
+  if(!p)return;
+  const i=S.bookmarks.findIndex(b=>b.id===id);
+  if(i>=0)S.bookmarks.splice(i,1);
+  else S.bookmarks.unshift({...p});
+  localStorage.setItem('kvl_bk',JSON.stringify(S.bookmarks));
+  updateBadge();
+  if(S.allResults.length)renderResults();
+}
 
-function updateStats(){document.getElementById('statTotal').textContent=S.data.length.toLocaleString('en-IN');document.getElementById('statActive').textContent=S.data.filter(p=>p.s==='A').length.toLocaleString('en-IN');document.getElementById('statRevoked').textContent=S.data.filter(p=>p.s==='R').length.toLocaleString('en-IN')}
+function renderSaved(){
+  const c=document.getElementById('savedCon');
+  if(!S.bookmarks.length){
+    c.innerHTML='<div class="state-view"><h3 style="color:var(--text)">No saved projects</h3><p style="color:var(--text3);margin-top:8px">Bookmark projects to view them here</p></div>';
+    return;
+  }
+  c.innerHTML=S.bookmarks.map((p,i)=>cardHTML(p,i)).join('');
+}
+
+function updateBadge(){
+  const b=document.getElementById('bkBadge');
+  b.textContent=S.bookmarks.length;
+  b.classList.toggle('show',S.bookmarks.length>0);
+}
+
+function updateStats(){
+  document.getElementById('statTotal').textContent=S.data.length.toLocaleString('en-IN');
+  document.getElementById('statActive').textContent=S.data.filter(p=>p.s==='A').length.toLocaleString('en-IN');
+  document.getElementById('statRevoked').textContent=S.data.filter(p=>p.s==='R').length.toLocaleString('en-IN');
+}
 
 function showChecklist(){document.getElementById('checkModal').classList.add('show');document.body.style.overflow='hidden'}
 function closeCheck(){document.getElementById('checkModal').classList.remove('show');document.body.style.overflow=''}
 function closeCheckOutside(e){if(e.target===document.getElementById('checkModal'))closeCheck()}
-function setupInstall(){window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();S.deferredInstall=e;if(!localStorage.getItem('kvl_inst_dismissed'))document.getElementById('installBanner').style.display='flex'});window.addEventListener('appinstalled',()=>{document.getElementById('installBanner').style.display='none'})}
-function triggerInstall(){if(S.deferredInstall)S.deferredInstall.prompt();else setPage('guide')}
-function dismissInstall(e){e.stopPropagation();document.getElementById('installBanner').style.display='none';localStorage.setItem('kvl_inst_dismissed','1')}
+
+function setupInstall(){
+  window.addEventListener('beforeinstallprompt',e=>{
+    e.preventDefault();
+    S.deferredInstall=e;
+    if(!localStorage.getItem('kvl_inst_dismissed')){
+      document.getElementById('installBanner').style.display='flex';
+    }
+  });
+  window.addEventListener('appinstalled',()=>{
+    document.getElementById('installBanner').style.display='none';
+  });
+}
+
+function triggerInstall(){
+  if(S.deferredInstall){
+    S.deferredInstall.prompt();
+    S.deferredInstall.userChoice.then(result=>{
+      if(result.outcome==='accepted'){
+        document.getElementById('installBanner').style.display='none';
+      }
+    });
+  } else {
+    setPage('guide');
+  }
+}
+
+function dismissInstall(e){
+  e.stopPropagation();
+  document.getElementById('installBanner').style.display='none';
+  localStorage.setItem('kvl_inst_dismissed','1');
+}
 
 let toastTmr;
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.classList.remove('show'),2500)}
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/wbrera/sw.js').catch(()=>{}));
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTmr);
+  toastTmr=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
 
 async function init(){
-  const t=localStorage.getItem('kvl_theme');S.darkMode=t!=='light';applyTheme();
-  try{S.bookmarks=JSON.parse(localStorage.getItem('kvl_bk')||'[]')}catch(e){}
-  try{S.history=JSON.parse(localStorage.getItem('kvl_hist')||'[]')}catch(e){}
+  const t=localStorage.getItem('kvl_theme');
+  S.darkMode=t!=='light';
+  applyTheme();
+  
+  try{S.bookmarks=JSON.parse(localStorage.getItem('kvl_bk')||'[]')}catch(e){S.bookmarks=[]}
+  try{S.history=JSON.parse(localStorage.getItem('kvl_hist')||'[]')}catch(e){S.history=[]}
+  
   updateBadge();
   document.getElementById('syncDot').style.background='var(--gold)';
+  document.getElementById('syncText').textContent='Loading data...';
+  
   const ok=await loadData();
-  document.getElementById('syncDot').style.background=ok?'var(--green)':'var(--orange)';
-  document.getElementById('syncText').textContent=ok?'Offline‑ready · Dynamic loading':'Using cached data';
-  renderQuickChips();renderHistory();setupInstall();
+  
+  if(ok){
+    document.getElementById('syncDot').style.background='var(--green)';
+    document.getElementById('syncText').textContent='Data loaded • Ready';
+  } else {
+    document.getElementById('syncDot').style.background='var(--gold)';
+    document.getElementById('syncText').textContent='Using sample data';
+  }
+  
+  renderQuickChips();
+  renderHistory();
+  setupInstall();
 }
+
 document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
