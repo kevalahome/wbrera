@@ -8,128 +8,702 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="WB RERA">
-<link rel="manifest" href="/wbrera/manifest.json">
+<link rel="manifest" href="manifest.json">
 <title>Kevala Home — WB RERA Check</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
+/* ═══════════════════════════════════════
+   DESIGN TOKENS — DARK (DEFAULT)
+═══════════════════════════════════════ */
 :root {
-  --bg:#100820;--bg2:#180c2e;--bg3:#1e1038;--card:#1e1235;--card2:#271a42;
-  --border:#3a1f5c;--border2:#5c3390;--purple:#c084fc;--purple2:#a855f7;
-  --purple3:#7c3aed;--pink:#f472b6;--pink2:#ec4899;--gold:#fbbf24;--gold2:#f59e0b;
-  --offwhite:#faf5ff;--red:#fb7185;--green:#34d399;--text:#faf5ff;--text2:#d8b4fe;
-  --text3:#9061c4;--muted:#5c3a82;--radius:18px;--radius-sm:12px;--radius-xs:8px;
-  --f-display:'Playfair Display',Georgia,serif;--f-body:'DM Sans',system-ui,sans-serif;
-  --fs-xs:12px;--fs-sm:14px;--fs-base:16px;--fs-md:17px;--fs-lg:19px;--fs-xl:22px;--fs-2xl:26px;
+  --bg:        #100820;
+  --bg2:       #180c2e;
+  --bg3:       #1e1038;
+  --card:      #1e1235;
+  --card2:     #271a42;
+  --border:    #3a1f5c;
+  --border2:   #5c3390;
+
+  --purple:    #c084fc;
+  --purple2:   #a855f7;
+  --purple3:   #7c3aed;
+  --pink:      #f472b6;
+  --pink2:     #ec4899;
+  --gold:      #fbbf24;
+  --gold2:     #f59e0b;
+  --offwhite:  #faf5ff;
+  --cream:     #f3e8ff;
+  --red:       #fb7185;
+  --orange:    #fb923c;
+  --green:     #34d399;
+
+  --text:      #faf5ff;
+  --text2:     #d8b4fe;
+  --text3:     #9061c4;
+  --muted:     #5c3a82;
+
+  --radius:    18px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --shadow:    0 4px 32px rgba(124,58,237,0.25);
+  --shadow-lg: 0 12px 56px rgba(124,58,237,0.4);
+
+  --f-display: 'Playfair Display', Georgia, serif;
+  --f-body:    'DM Sans', system-ui, sans-serif;
+
+  --fs-xs:  12px;
+  --fs-sm:  14px;
+  --fs-base:16px;
+  --fs-md:  17px;
+  --fs-lg:  19px;
+  --fs-xl:  22px;
+  --fs-2xl: 26px;
+  --fs-3xl: 32px;
 }
+
+/* ═══════════════════════════════════════
+   LIGHT MODE
+═══════════════════════════════════════ */
 body.light {
-  --bg:#fdf8ff;--bg2:#f5eeff;--bg3:#ede0ff;--card:#fff;--card2:#faf3ff;
-  --border:#dcc6f5;--border2:#c09ee8;--purple:#7c3aed;--purple2:#6d28d9;
-  --purple3:#5b21b6;--pink:#db2777;--pink2:#be185d;--gold:#d97706;--gold2:#b45309;
-  --text:#1a0a2e;--text2:#4c1d95;--text3:#6d28d9;--muted:#9061c4;
+  --bg:        #fdf8ff;
+  --bg2:       #f5eeff;
+  --bg3:       #ede0ff;
+  --card:      #ffffff;
+  --card2:     #faf3ff;
+  --border:    #dcc6f5;
+  --border2:   #c09ee8;
+
+  --purple:    #7c3aed;
+  --purple2:   #6d28d9;
+  --purple3:   #5b21b6;
+  --pink:      #db2777;
+  --pink2:     #be185d;
+  --gold:      #d97706;
+  --gold2:     #b45309;
+
+  --text:      #1a0a2e;
+  --text2:     #4c1d95;
+  --text3:     #6d28d9;
+  --muted:     #9061c4;
 }
-body.light{background:#fdf8ff}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;-webkit-text-size-adjust:100%}
-body{font-family:var(--f-body);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;font-size:var(--fs-base);line-height:1.6;background-image:radial-gradient(ellipse 70% 50% at 15% 0%,rgba(168,85,247,0.22) 0%,transparent 55%),radial-gradient(ellipse 50% 40% at 85% 90%,rgba(244,114,182,0.15) 0%,transparent 55%)}
-.header{position:sticky;top:0;z-index:200;background:rgba(16,8,32,0.93);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 20px}
-body.light .header{background:rgba(253,248,255,0.95)}
-.header-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:66px}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-mark{width:42px;height:42px;background:linear-gradient(135deg,var(--purple3),var(--pink2));border-radius:13px;display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:800;font-size:17px;color:#fff;flex-shrink:0;box-shadow:0 4px 16px rgba(124,58,237,0.45)}
-.logo-name{font-family:var(--f-display);font-weight:700;font-size:var(--fs-lg);color:var(--text);line-height:1.15}
-.logo-tag{font-size:var(--fs-xs);font-weight:500;color:var(--text3);letter-spacing:.6px;text-transform:uppercase;margin-top:1px}
-.header-actions{display:flex;gap:10px}
-.icon-btn{width:40px;height:40px;border:1.5px solid var(--border);background:var(--card);border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:18px;transition:all .2s;-webkit-tap-highlight-color:transparent}
-.main{max-width:680px;margin:0 auto;padding:0 18px 110px}
-.hero{padding:30px 0 22px;text-align:center}
-.hero-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(192,132,252,0.12);border:1.5px solid rgba(192,132,252,0.3);color:var(--purple);font-size:var(--fs-sm);font-weight:600;padding:6px 16px;border-radius:100px;margin-bottom:16px}
-.hero h1{font-family:var(--f-display);font-weight:800;font-size:clamp(var(--fs-2xl),7vw,40px);color:var(--offwhite);line-height:1.15;margin-bottom:10px}
-body.light .hero h1{color:var(--text)}
-.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{color:var(--text2);font-size:var(--fs-md);line-height:1.65;max-width:360px;margin:0 auto 22px}
-.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-.hero-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px}
-.hero-badge.offline{background:rgba(52,211,153,0.12);border:1.5px solid rgba(52,211,153,0.3);color:#4ade80}
-.stats-strip{display:flex;justify-content:center;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;max-width:380px;margin:0 auto}
-.stat-item{flex:1;padding:14px 10px;text-align:center;border-right:1px solid var(--border)}
-.stat-item:last-child{border-right:none}
-.stat-num{font-family:var(--f-display);font-weight:700;font-size:var(--fs-xl);color:var(--gold);line-height:1}
-.stat-label{font-size:var(--fs-xs);color:var(--text3);margin-top:3px;font-weight:500}
-.sync-bar{display:flex;align-items:center;justify-content:center;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:16px;gap:10px}
-.sync-status{display:flex;align-items:center;gap:8px;font-size:var(--fs-sm);color:var(--text2)}
-.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0}
-.search-panel{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:18px;box-shadow:0 4px 32px rgba(124,58,237,0.25)}
-.search-label{font-size:var(--fs-xs);font-weight:700;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
-.search-wrap{position:relative}
-.search-ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:18px;pointer-events:none}
-#searchInput{width:100%;padding:16px 50px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--f-body);font-size:var(--fs-md);outline:none;-webkit-appearance:none}
-#searchInput::placeholder{color:var(--muted)}
-#searchInput:focus{border-color:var(--purple2);background:var(--bg3)}
-.clear-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:var(--border);border:none;border-radius:50%;width:26px;height:26px;color:var(--text3);font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center}
-.clear-btn.show{display:flex}
-.filter-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-.filter-chip{padding:7px 16px;background:var(--bg2);border:1.5px solid var(--border);border-radius:100px;font-size:var(--fs-sm);font-weight:500;color:var(--text2);cursor:pointer;white-space:nowrap}
-.filter-chip.active{background:rgba(192,132,252,0.15);border-color:var(--purple);color:var(--purple)}
-.section-block{margin-bottom:18px}
-.section-title{font-size:var(--fs-xs);font-weight:700;color:var(--text3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px}
-.chips-wrap{display:flex;flex-wrap:wrap;gap:9px}
-.chip{padding:9px 18px;background:var(--card2);border:1.5px solid var(--border);border-radius:100px;font-size:var(--fs-sm);font-weight:500;color:var(--text2);cursor:pointer}
-.results-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.results-count{font-size:var(--fs-md);color:var(--text2);font-weight:500}
-.results-count strong{color:var(--gold);font-weight:700}
-.results-meta{font-size:var(--fs-sm);color:var(--text3)}
-.proj-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;animation:fadeUp .35s ease both}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.proj-card.revoked-card{border-color:rgba(251,113,133,0.4);background:linear-gradient(135deg,var(--card),rgba(251,113,133,0.04))}
-.card-top{padding:16px 16px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.card-name-block{flex:1;min-width:0}
-.card-name{font-family:var(--f-display);font-weight:700;font-size:var(--fs-lg);color:var(--offwhite);line-height:1.3;margin-bottom:5px}
-body.light .card-name{color:var(--text)}
-.card-id{font-size:var(--fs-sm);color:var(--text3);font-weight:500}
-.bkmark-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:22px;padding:2px 4px;flex-shrink:0}
-.bkmark-btn.saved{color:var(--gold)}
-.card-grid{padding:0 16px 14px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.card-field{background:var(--bg2);border-radius:var(--radius-xs);padding:10px 12px}
-.field-label{font-size:var(--fs-xs);font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.field-val{font-size:var(--fs-sm);color:var(--text);word-break:break-all;line-height:1.4;font-weight:500}
-.card-field.span2{grid-column:1/-1}
-.status-badge{display:inline-flex;align-items:center;gap:5px;font-size:var(--fs-sm);font-weight:700;padding:4px 12px;border-radius:100px}
-.status-badge.a{background:rgba(52,211,153,0.12);color:var(--green)}
-.status-badge.r{background:rgba(251,113,133,0.12);color:var(--red)}
-.card-flags{padding:0 16px 10px;display:flex;flex-wrap:wrap;gap:7px}
-.flag{display:flex;align-items:center;gap:5px;font-size:var(--fs-sm);padding:5px 13px;border-radius:100px;font-weight:600}
-.flag-ok{background:rgba(52,211,153,0.1);color:var(--green);border:1px solid rgba(52,211,153,0.25)}
-.flag-danger{background:rgba(251,113,133,0.1);color:var(--red);border:1px solid rgba(251,113,133,0.25)}
-.flag-info{background:rgba(192,132,252,0.1);color:var(--purple);border:1px solid rgba(192,132,252,0.25)}
-.card-actions{padding:0 16px 16px;display:flex;gap:9px}
-.btn-verify{flex:1;padding:13px 16px;background:linear-gradient(135deg,var(--purple3),var(--pink2));border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
-.btn-share{padding:13px 16px;background:rgba(251,191,36,0.1);border:1.5px solid rgba(251,191,36,0.35);border-radius:var(--radius-sm);color:var(--gold);font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap}
-.feedback-row{display:flex;align-items:center;gap:10px;padding:12px 16px;margin:0 16px 14px;background:var(--bg2);border-radius:var(--radius-sm);border:1px solid var(--border);font-size:var(--fs-sm);color:var(--text2)}
-.feedback-row span{flex-shrink:0;font-weight:500}
-.feedback-yes,.feedback-no{flex:1;padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:var(--fs-sm);font-weight:600;cursor:pointer;text-align:center;transition:all 0.15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.feedback-yes:hover,.feedback-no:hover{border-color:var(--purple);color:var(--purple)}
-.feedback-thanks{text-align:center;padding:10px;color:var(--green);font-size:var(--fs-sm);font-weight:500;animation:fadeUp 0.3s ease}
-.btn-cert{width:100%;padding:12px 16px;background:rgba(52,211,153,0.1);border:1.5px solid rgba(52,211,153,0.3);border-radius:var(--radius-sm);color:var(--green);font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
-.btn-cost{flex:1;padding:13px 16px;background:linear-gradient(135deg,var(--purple3),var(--pink2));border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
-.state-view{padding:48px 24px;text-align:center;color:var(--text3)}
-.load-more{width:100%;padding:16px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--purple);font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;margin-bottom:14px}
-.panel{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px}
-.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.hist-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer}
-.hist-item:last-child{border-bottom:none}
-.hist-name{flex:1;font-size:var(--fs-md);color:var(--text2);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bot-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(16,8,32,0.97);backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:10px 0 calc(10px + env(safe-area-inset-bottom))}
-.bot-nav-inner{max-width:680px;margin:0 auto;display:flex;justify-content:space-around}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;cursor:pointer;border:none;background:none;color:var(--muted);font-family:var(--f-body);font-size:var(--fs-xs);font-weight:600}
-.nav-btn.active{color:var(--pink)}
-.nav-ico{font-size:22px;position:relative}
-.nav-badge{position:absolute;top:-5px;right:-8px;background:var(--gold);color:#1a0a2e;font-size:10px;font-weight:800;min-width:17px;height:17px;border-radius:9px;display:none;align-items:center;justify-content:center}
-.nav-badge.show{display:flex}
-.page{display:none}
-.page.active{display:block}
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--card2);border:1.5px solid var(--border2);color:var(--text);font-size:var(--fs-md);font-weight:600;padding:12px 24px;border-radius:100px;opacity:0;transition:all .3s;z-index:600;white-space:nowrap;pointer-events:none}
-.toast.show{opacity:1}
+body.light { background: #fdf8ff; }
+
+/* ═══════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--f-body);
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 70% 50% at 15% 0%, rgba(168,85,247,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 90%, rgba(244,114,182,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(251,191,36,0.05) 0%, transparent 60%);
+  color: var(--text);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.35s, color 0.35s;
+  font-size: var(--fs-base);
+  line-height: 1.6;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 5px; }
+
+/* ═══════════════════════════════════════
+   HEADER
+═══════════════════════════════════════ */
+.header {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(16,8,32,0.93);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  transition: background 0.35s;
+}
+body.light .header { background: rgba(253,248,255,0.95); }
+
+.header-inner {
+  max-width: 680px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 66px;
+}
+
+.logo { display: flex; align-items: center; gap: 12px; }
+
+.logo-mark {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--purple3), var(--pink2));
+  border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-display);
+  font-weight: 800; font-size: 17px; color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(124,58,237,0.45);
+}
+
+.logo-name {
+  font-family: var(--f-display);
+  font-weight: 700; font-size: var(--fs-lg);
+  color: var(--text); line-height: 1.15;
+}
+.logo-tag {
+  font-size: var(--fs-xs); font-weight: 500;
+  color: var(--text3); letter-spacing: 0.6px;
+  text-transform: uppercase; margin-top: 1px;
+}
+
+.header-actions { display: flex; gap: 10px; }
+
+.icon-btn {
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius-xs);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text2);
+  font-size: 18px;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.icon-btn:hover, .icon-btn:active {
+  background: var(--card2); border-color: var(--purple); color: var(--purple);
+  transform: scale(1.05);
+}
+
+/* ═══════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════ */
+.main { max-width: 680px; margin: 0 auto; padding: 0 18px 110px; }
+
+/* ═══════════════════════════════════════
+   HERO
+═══════════════════════════════════════ */
+.hero { padding: 30px 0 22px; text-align: center; }
+
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(192,132,252,0.12);
+  border: 1.5px solid rgba(192,132,252,0.3);
+  color: var(--purple); font-size: var(--fs-sm); font-weight: 600;
+  padding: 6px 16px; border-radius: 100px;
+  letter-spacing: 0.2px; margin-bottom: 16px;
+}
+
+.hero h1 {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(var(--fs-2xl), 7vw, 40px);
+  color: var(--offwhite); line-height: 1.15;
+  letter-spacing: -0.5px; margin-bottom: 10px;
+}
+
+body.light .hero h1 { color: var(--text); }
+
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--pink), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  color: var(--text2); font-size: var(--fs-md);
+  line-height: 1.65; max-width: 360px;
+  margin: 0 auto 22px;
+}
+
+.hero-badges {
+  display: flex; justify-content: center; align-items: center;
+  gap: 8px; flex-wrap: wrap; margin-bottom: 18px;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.3px;
+  padding: 4px 12px; border-radius: 100px;
+}
+.hero-badge.offline {
+  background: rgba(34,197,94,0.12);
+  border: 1.5px solid rgba(34,197,94,0.3);
+  color: #4ade80;
+}
+body.light .hero-badge.offline { color: #16a34a; border-color: rgba(22,163,74,0.35); background: rgba(22,163,74,0.08); }
+.hero-badge.offline::before {
+  content: ''; display: block; width: 7px; height: 7px;
+  border-radius: 50%; background: #4ade80;
+  box-shadow: 0 0 0 2px rgba(74,222,128,0.3);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+body.light .hero-badge.offline::before { background: #16a34a; box-shadow: 0 0 0 2px rgba(22,163,74,0.25); }
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(74,222,128,0.3); }
+  50% { box-shadow: 0 0 0 5px rgba(74,222,128,0); }
+}
+
+.stats-strip {
+  display: flex; justify-content: center;
+  gap: 0; margin-top: 6px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  max-width: 380px; margin: 0 auto;
+}
+
+.stat-item {
+  flex: 1; padding: 14px 10px; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat-item:last-child { border-right: none; }
+
+.stat-num {
+  font-family: var(--f-display); font-weight: 700;
+  font-size: var(--fs-xl); color: var(--gold);
+  line-height: 1;
+}
+.stat-label {
+  font-size: var(--fs-xs); color: var(--text3);
+  margin-top: 3px; font-weight: 500;
+}
+
+/* ═══════════════════════════════════════
+   DATA SYNC STATUS BAR
+═══════════════════════════════════════ */
+.sync-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px 14px;
+  margin-bottom: 16px; gap: 10px;
+}
+
+.sync-status {
+  display: flex; align-items: center; gap: 8px;
+  font-size: var(--fs-sm); color: var(--text2);
+}
+
+.sync-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green); flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════
+   SEARCH PANEL
+═══════════════════════════════════════ */
+.search-panel {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px; margin-bottom: 18px;
+  box-shadow: var(--shadow);
+}
+
+.search-label {
+  font-size: var(--fs-xs); font-weight: 700;
+  color: var(--text3); letter-spacing: 0.8px;
+  text-transform: uppercase; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+
+.search-wrap { position: relative; }
+
+.search-ico {
+  position: absolute; left: 16px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3); font-size: 18px; pointer-events: none;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 16px 50px 16px 50px;
+  background: var(--bg2); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text); font-family: var(--f-body);
+  font-size: var(--fs-md); outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  -webkit-appearance: none;
+}
+#searchInput::placeholder { color: var(--muted); }
+#searchInput:focus {
+  border-color: var(--purple2); background: var(--bg3);
+  box-shadow: 0 0 0 3px rgba(168,85,247,0.12);
+}
+
+.clear-btn {
+  position: absolute; right: 14px; top: 50%;
+  transform: translateY(-50%);
+  background: var(--border); border: none; border-radius: 50%;
+  width: 26px; height: 26px;
+  color: var(--text3); font-size: 14px; cursor: pointer;
+  display: none; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent; transition: all 0.2s;
+}
+.clear-btn.show { display: flex; }
+.clear-btn:hover { background: var(--border2); color: var(--text); }
+
+.search-tip {
+  font-size: var(--fs-sm); color: var(--text3); margin-top: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* Filter chips */
+.filter-row {
+  display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;
+}
+
+.filter-chip {
+  padding: 7px 16px;
+  background: var(--bg2); border: 1.5px solid var(--border);
+  border-radius: 100px; font-size: var(--fs-sm); font-weight: 500;
+  color: var(--text2); cursor: pointer;
+  transition: all 0.2s; -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.filter-chip.active {
+  background: rgba(192,132,252,0.15);
+  border-color: var(--purple); color: var(--purple);
+}
+.filter-chip:hover { border-color: var(--border2); }
+
+/* ═══════════════════════════════════════
+   QUICK CHIPS
+═══════════════════════════════════════ */
+.section-block { margin-bottom: 18px; }
+
+.section-title {
+  font-size: var(--fs-xs); font-weight: 700;
+  color: var(--text3); letter-spacing: 0.8px;
+  text-transform: uppercase; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 7px;
+}
+
+.chips-wrap { display: flex; flex-wrap: wrap; gap: 9px; }
+
+.chip {
+  padding: 9px 18px; background: var(--card2);
+  border: 1.5px solid var(--border); border-radius: 100px;
+  font-size: var(--fs-sm); font-weight: 500; color: var(--text2);
+  cursor: pointer; transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.chip:hover, .chip:active {
+  background: rgba(192,132,252,0.12);
+  border-color: var(--purple); color: var(--purple);
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════
+   RESULTS
+═══════════════════════════════════════ */
+.results-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.results-count {
+  font-size: var(--fs-md); color: var(--text2); font-weight: 500;
+}
+.results-count strong { color: var(--gold); font-weight: 700; }
+.results-meta { font-size: var(--fs-sm); color: var(--text3); }
+
+/* ═══════════════════════════════════════
+   PROJECT CARD
+═══════════════════════════════════════ */
+.proj-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); margin-bottom: 14px;
+  overflow: hidden; transition: all 0.22s;
+  animation: fadeUp 0.35s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.proj-card:hover {
+  border-color: var(--border2); transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.proj-card.revoked-card {
+  border-color: rgba(251,113,133,0.4);
+  background: linear-gradient(135deg, var(--card), rgba(251,113,133,0.04));
+}
+
+.card-top {
+  padding: 16px 16px 12px;
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+}
+
+.card-name-block { flex: 1; min-width: 0; }
+
+.card-name {
+  font-family: var(--f-display); font-weight: 700;
+  font-size: var(--fs-lg); color: var(--offwhite);
+  line-height: 1.3; margin-bottom: 5px;
+  word-break: break-word;
+}
+body.light .card-name { color: var(--text); }
+
+.card-id {
+  font-size: var(--fs-sm); color: var(--text3);
+  display: flex; align-items: center; gap: 5px; font-weight: 500;
+}
+
+.bkmark-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 22px;
+  padding: 2px 4px; flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s, transform 0.2s;
+}
+.bkmark-btn:active { transform: scale(1.3); }
+.bkmark-btn.saved { color: var(--gold); }
+
+.card-grid {
+  padding: 0 16px 14px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.card-field {
+  background: var(--bg2); border-radius: var(--radius-xs); padding: 10px 12px;
+}
+
+.field-label {
+  font-size: var(--fs-xs); font-weight: 700;
+  color: var(--text3); text-transform: uppercase;
+  letter-spacing: 0.5px; margin-bottom: 4px;
+}
+
+.field-val {
+  font-size: var(--fs-sm); color: var(--text);
+  word-break: break-all; line-height: 1.4; font-weight: 500;
+}
+
+.card-field.span2 { grid-column: 1 / -1; }
+
+.status-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: var(--fs-sm); font-weight: 700;
+  padding: 4px 12px; border-radius: 100px;
+}
+.status-badge.a { background: rgba(52,211,153,0.12); color: var(--green); }
+.status-badge.r { background: rgba(251,113,133,0.12); color: var(--red); }
+.status-badge.l { background: rgba(251,146,60,0.12); color: var(--orange); }
+
+.card-flags {
+  padding: 0 16px 10px;
+  display: flex; flex-wrap: wrap; gap: 7px;
+}
+
+.flag {
+  display: flex; align-items: center; gap: 5px;
+  font-size: var(--fs-sm); padding: 5px 13px;
+  border-radius: 100px; font-weight: 600;
+}
+.flag-ok    { background: rgba(52,211,153,0.1);  color: var(--green);  border: 1px solid rgba(52,211,153,0.25); }
+.flag-warn  { background: rgba(251,146,60,0.1);  color: var(--orange); border: 1px solid rgba(251,146,60,0.25); }
+.flag-danger{ background: rgba(251,113,133,0.1); color: var(--red);    border: 1px solid rgba(251,113,133,0.25); }
+
+.card-actions { padding: 0 16px 16px; display: flex; gap: 9px; }
+
+.btn-verify {
+  flex: 1; padding: 13px 16px;
+  background: linear-gradient(135deg, var(--purple3), var(--pink2));
+  border: none; border-radius: var(--radius-sm);
+  color: #fff; font-family: var(--f-body);
+  font-size: var(--fs-md); font-weight: 700;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 7px;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.2s, transform 0.15s;
+  letter-spacing: 0.1px;
+}
+.btn-verify:active { opacity: 0.85; transform: scale(0.98); }
+
+.btn-share {
+  padding: 13px 16px;
+  background: rgba(251,191,36,0.1);
+  border: 1.5px solid rgba(251,191,36,0.35);
+  border-radius: var(--radius-sm); color: var(--gold);
+  font-family: var(--f-body); font-size: var(--fs-md); font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; gap: 7px;
+  -webkit-tap-highlight-color: transparent; transition: opacity 0.2s;
+  white-space: nowrap;
+}
+.btn-share:active { opacity: 0.8; }
+
+/* ═══════════════════════════════════════
+   EMPTY / SKELETON
+═══════════════════════════════════════ */
+.state-view {
+  padding: 48px 24px; text-align: center; color: var(--text3);
+}
+.state-icon { font-size: 48px; margin-bottom: 14px; }
+.state-view h3 {
+  font-family: var(--f-display); font-size: var(--fs-xl);
+  font-weight: 700; color: var(--text2); margin-bottom: 8px;
+}
+.state-view p { font-size: var(--fs-md); line-height: 1.6; }
+
+.skeleton {
+  background: linear-gradient(90deg, var(--card) 25%, var(--card2) 50%, var(--card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite; border-radius: 8px;
+  height: 18px; margin-bottom: 9px;
+}
+@keyframes shimmer { 0%{ background-position:200% 0;} 100%{background-position:-200% 0;}}
+
+.skel-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 16px; margin-bottom: 14px;
+}
+
+/* ═══════════════════════════════════════
+   LOAD MORE
+═══════════════════════════════════════ */
+.load-more {
+  width: 100%; padding: 16px;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); color: var(--purple);
+  font-family: var(--f-body); font-size: var(--fs-md); font-weight: 700;
+  cursor: pointer; margin-bottom: 14px;
+  -webkit-tap-highlight-color: transparent; transition: all 0.2s;
+}
+.load-more:hover { background: var(--card2); border-color: var(--border2); }
+
+/* ═══════════════════════════════════════
+   HISTORY PANEL
+═══════════════════════════════════════ */
+.panel {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px; margin-bottom: 16px;
+}
+.panel-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.panel-title {
+  font-family: var(--f-display); font-weight: 700;
+  font-size: var(--fs-lg); color: var(--text);
+  display: flex; align-items: center; gap: 7px;
+}
+.panel-clear {
+  font-size: var(--fs-sm); color: var(--text3); cursor: pointer;
+  -webkit-tap-highlight-color: transparent; transition: color 0.2s;
+}
+.panel-clear:hover { color: var(--red); }
+
+.hist-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 0; border-bottom: 1px solid var(--border);
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.2s;
+}
+.hist-item:last-child { border-bottom: none; }
+.hist-item:hover { opacity: 0.75; }
+.hist-ico { color: var(--text3); font-size: 16px; flex-shrink: 0; }
+.hist-name {
+  flex: 1; font-size: var(--fs-md); color: var(--text2); font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ═══════════════════════════════════════
+   BOTTOM NAV
+═══════════════════════════════════════ */
+.bot-nav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(16,8,32,0.97);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--border);
+  padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+  transition: background 0.35s;
+}
+body.light .bot-nav { background: rgba(253,248,255,0.98); }
+
+.bot-nav-inner {
+  max-width: 680px; margin: 0 auto;
+  display: flex; justify-content: space-around;
+}
+
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 4px; padding: 6px;
+  cursor: pointer; border: none; background: none;
+  color: var(--muted); font-family: var(--f-body);
+  font-size: var(--fs-xs); font-weight: 600;
+  -webkit-tap-highlight-color: transparent; transition: color 0.2s;
+  letter-spacing: 0.2px;
+}
+.nav-btn.active { color: var(--pink); }
+.nav-ico { font-size: 22px; position: relative; }
+
+.nav-badge {
+  position: absolute; top: -5px; right: -8px;
+  background: var(--gold); color: #1a0a2e;
+  font-size: 10px; font-weight: 800; min-width: 17px; height: 17px;
+  border-radius: 9px; display: none; align-items: center;
+  justify-content: center; padding: 0 3px;
+}
+.nav-badge.show { display: flex; }
+
+/* ═══════════════════════════════════════
+   PAGES
+═══════════════════════════════════════ */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ═══════════════════════════════════════
+   INSTALL GUIDE PAGE
+═══════════════════════════════════════ */
+.guide-section {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 18px; margin-bottom: 14px;
+}
+
+.guide-section h3 {
+  font-family: var(--f-display); font-weight: 700;
+  font-size: var(--fs-xl); color: var(--text);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 9px;
+}
+
+.step-list { list-style: none; }
+
+.step-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.step-item:last-child { border-bottom: none; }
+
+.step-num {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--purple3), var(--pink2));
+  color: #fff; font-size: var(--fs-sm); font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+
+.step-text { flex: 1; }
+.step-title { font-size: var(--fs-md); font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.step-desc { font-size: var(--fs-sm); color: var(--text2); line-height: 1.6; }
+
+.tip-box {
+  background: rgba(192,132,252,0.08); border: 1px solid rgba(192,132,252,0.25);
+  border-radius: var(--radius-sm); padding: 14px;
+  font-size: var(--fs-sm); color: var(--text2); line-height: 1.65;
+  margin-top: 12px; display: flex; gap: 10px; align-items: flex-start;
+}
+.tip-ico { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+
+/* ═══════════════════════════════════════
+   ABOUT / INFO SECTIONS
+═══════════════════════════════════════ */
 .info-section {
   background: var(--card); border: 1.5px solid var(--border);
   border-radius: var(--radius); padding: 18px; margin-bottom: 14px;
@@ -146,19 +720,119 @@ body.light .card-name{color:var(--text)}
 .info-section li::before { content: "→ "; color: var(--pink); font-weight: 700; }
 
 .link-row {
-  display: flex; align-items: center; gap: 13px; padding: 14px;
-  background: var(--card); border: 1.5px solid var(--border);
+  display: flex; align-items: center; gap: 13px; padding: 13px;
+  background: var(--bg2); border: 1.5px solid var(--border);
   border-radius: var(--radius-sm); margin-bottom: 9px;
   cursor: pointer; text-decoration: none;
-  -webkit-tap-highlight-color: transparent; transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent; transition: border-color 0.2s;
 }
-.link-row:hover { border-color: var(--purple2); background: var(--card2); }
+.link-row:hover { border-color: var(--purple); }
 .link-ico { width: 42px; height: 42px; border-radius: 12px; background: rgba(192,132,252,0.12); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
 .link-info { flex: 1; }
-.link-name { font-size: var(--fs-md); font-weight: 700; color: var(--offwhite); }
-body.light .link-name { color: var(--text); }
-.link-url  { font-size: var(--fs-xs); color: var(--purple2); margin-top: 2px; font-weight: 500; }
-.link-arr  { color: var(--gold); font-size: 16px; font-weight: 700; }
+.link-name { font-size: var(--fs-md); font-weight: 700; color: var(--text); }
+.link-url  { font-size: var(--fs-xs); color: var(--text3); margin-top: 2px; }
+.link-arr  { color: var(--text3); font-size: 16px; }
+
+/* ═══════════════════════════════════════
+   MODAL (CHECKLIST)
+═══════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(5px);
+  z-index: 500; display: none;
+  align-items: flex-end; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+
+.modal {
+  background: var(--bg2); border: 1.5px solid var(--border);
+  border-radius: 22px 22px 0 0;
+  width: 100%; max-width: 680px; max-height: 88vh;
+  overflow-y: auto; animation: modalUp 0.3s ease;
+}
+@keyframes modalUp { from{transform:translateY(40px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+
+.modal-handle {
+  width: 40px; height: 5px; background: var(--border2);
+  border-radius: 5px; margin: 13px auto 0;
+}
+.modal-header {
+  padding: 16px 22px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-title {
+  font-family: var(--f-display); font-weight: 700;
+  font-size: var(--fs-xl); color: var(--offwhite);
+}
+body.light .modal-title { color: var(--text); }
+.modal-close {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 9px; color: var(--text2); font-size: 18px;
+  width: 34px; height: 34px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.modal-body { padding: 0 22px 28px; }
+
+.cl-item {
+  display: flex; align-items: flex-start; gap: 13px;
+  padding: 13px 0; border-bottom: 1px solid var(--border);
+}
+.cl-item:last-child { border-bottom: none; }
+.cl-ico {
+  width: 32px; height: 32px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0; margin-top: 1px;
+}
+.cl-ico.g { background: rgba(52,211,153,0.15); }
+.cl-ico.o { background: rgba(251,146,60,0.15); }
+.cl-ico.r { background: rgba(251,113,133,0.15); }
+.cl-text { flex: 1; }
+.cl-title { font-size: var(--fs-md); font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.cl-desc  { font-size: var(--fs-sm); color: var(--text3); line-height: 1.6; }
+
+/* ═══════════════════════════════════════
+   INSTALL BANNER
+═══════════════════════════════════════ */
+.install-banner {
+  background: linear-gradient(135deg, rgba(124,58,237,0.14), rgba(236,72,153,0.08));
+  border: 1.5px solid rgba(192,132,252,0.28);
+  border-radius: var(--radius); padding: 15px 18px;
+  display: flex; align-items: center; gap: 13px;
+  margin-bottom: 18px; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.ib-ico { font-size: 26px; flex-shrink: 0; }
+.ib-text { flex: 1; }
+.ib-title { font-size: var(--fs-md); font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.ib-sub   { font-size: var(--fs-sm); color: var(--text2); }
+.ib-close {
+  background: none; border: none; color: var(--text3);
+  font-size: 20px; cursor: pointer; padding: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 90px; left: 50%;
+  transform: translateX(-50%) translateY(24px);
+  background: var(--card2); border: 1.5px solid var(--border2);
+  color: var(--text); font-size: var(--fs-md); font-weight: 600;
+  padding: 12px 24px; border-radius: 100px;
+  opacity: 0; transition: all 0.3s; z-index: 600;
+  white-space: nowrap; pointer-events: none;
+  box-shadow: var(--shadow);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (min-width: 500px) {
+  .card-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
 
 .page-head { padding: 26px 0 16px; }
 .page-head-title {
@@ -168,416 +842,762 @@ body.light .link-name { color: var(--text); }
 .page-head-sub {
   font-size: var(--fs-md); color: var(--text3); margin-top: 4px;
 }
-.install-banner{background:linear-gradient(135deg,rgba(124,58,237,0.14),rgba(236,72,153,0.08));border:1.5px solid rgba(192,132,252,0.28);border-radius:var(--radius);padding:15px 18px;display:flex;align-items:center;gap:13px;margin-bottom:18px;cursor:pointer}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;display:none;align-items:center;justify-content:center}
-.modal-overlay.show{display:flex}
-.modal{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);width:90%;max-width:400px;padding:24px}
-.modal h3{font-family:var(--f-display);font-size:var(--fs-xl);color:var(--text);margin-bottom:16px}
-.modal label{font-size:var(--fs-xs);font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;margin-top:12px}
-.modal input{width:100%;padding:12px;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--radius-xs);color:var(--text);font-size:var(--fs-md)}
-.modal input:focus{border-color:var(--purple2);outline:none}
-.modal-buttons{display:flex;gap:8px;margin-top:20px}
-.modal-buttons button{flex:1;padding:13px;border:none;border-radius:var(--radius-xs);font-size:var(--fs-md);font-weight:700;cursor:pointer}
-.btn-primary{background:linear-gradient(135deg,var(--purple3),var(--pink2));color:#fff}
-.btn-secondary{background:var(--card2);border:1.5px solid var(--border);color:var(--text2)}
-/* Card details divider */
-.card-details-divider{margin:0 16px 10px;border:none;border-top:1px solid var(--border)}
-@media(min-width:500px){.card-grid{grid-template-columns:1fr 1fr 1fr}}
 </style>
 </head>
+
 <body>
 
+<!-- ══════ HEADER ══════ -->
 <header class="header">
   <div class="header-inner">
     <div class="logo">
-  <img src="logo.jpg" alt="Kevala Home" style="width:42px;height:42px;border-radius:13px;object-fit:cover">
-  <div><div class="logo-name">Kevala Home</div><div class="logo-tag">West Bengal RERA</div></div>
-</div>
+      <div class="logo-mark">KH</div>
+      <div>
+        <div class="logo-name">Kevala Home</div>
+        <div class="logo-tag">West Bengal RERA</div>
+      </div>
+    </div>
     <div class="header-actions">
-      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
-      <button class="icon-btn" onclick="showChecklist()">📋</button>
-      <button class="icon-btn" onclick="setPage('saved')">🔖</button>
+      <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <button class="icon-btn" onclick="showChecklist()" title="Buyer Safety Checklist">📋</button>
+      <button class="icon-btn" onclick="setPage('saved')" title="Saved Projects">🔖</button>
     </div>
   </div>
 </header>
 
+<!-- ══════ MAIN ══════ -->
 <main class="main">
+
+  <!-- ── SEARCH PAGE ── -->
   <div class="page active" id="page-search">
+
     <div class="hero">
       <div class="hero-pill">🛡️ Official WB RERA Data</div>
       <h1>Verify Before<br>You <em>Buy.</em></h1>
       <p class="hero-sub">Check RERA registration status of any West Bengal real estate project instantly — free &amp; official.</p>
-      <div class="hero-badges"><span class="hero-badge offline">Works Offline</span></div>
+      <div class="hero-badges">
+        <span class="hero-badge offline">Works Offline</span>
+      </div>
       <div class="stats-strip">
-        <div class="stat-item"><div class="stat-num" id="statTotal">—</div><div class="stat-label">Projects</div></div>
-        <div class="stat-item"><div class="stat-num" id="statActive">—</div><div class="stat-label">Active</div></div>
-        <div class="stat-item"><div class="stat-num" id="statRevoked">—</div><div class="stat-label">Revoked</div></div>
+        <div class="stat-item">
+          <div class="stat-num" id="statTotal">4,265</div>
+          <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" id="statActive">4,251</div>
+          <div class="stat-label">Active</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" id="statRevoked">14</div>
+          <div class="stat-label">Revoked</div>
+        </div>
       </div>
     </div>
-    <div class="install-banner" id="installBanner" style="display:none" onclick="triggerInstall()">
-      <span>📲</span><div><strong>Add to Home Screen</strong><br><small>Use like a native app</small></div>
-      <button onclick="dismissInstall(event)" style="background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+
+    <!-- INSTALL BANNER -->
+    <div class="install-banner" id="installBanner" style="display:none;" onclick="triggerInstall()">
+      <div class="ib-ico">📲</div>
+      <div class="ib-text">
+        <div class="ib-title">Add to Home Screen</div>
+        <div class="ib-sub">Use like a native app — works offline</div>
+      </div>
+      <button class="ib-close" onclick="dismissInstall(event)">✕</button>
     </div>
-    <div class="sync-bar"><div class="sync-status"><div class="sync-dot" id="syncDot"></div><span id="syncText">Loading data…</span></div></div>
+
+    <!-- DATA SYNC BAR — ALWAYS SHOWS OFFLINE-READY -->
+    <div class="sync-bar" style="justify-content:center;text-align:center;">
+      <div class="sync-status">
+        <div class="sync-dot" id="syncDot" style="background:var(--green);animation:none;"></div>
+        <span id="syncText">Offline‑ready · All data embedded</span>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
     <div class="search-panel">
       <div class="search-label">🔍 Search Projects</div>
       <div class="search-wrap">
         <span class="search-ico">🔍</span>
-        <input id="searchInput" type="text" placeholder="Project name or Registration number…" autocomplete="off" oninput="onSearch()">
+        <input id="searchInput" type="text"
+          placeholder="Project name or Registration number…"
+          autocomplete="off" autocorrect="off" spellcheck="false"
+          oninput="onSearch()">
         <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
       </div>
+      <div class="search-tip">💡 <span id="tipText">Try "Merlin", "Eden", "Shapoorji" or paste a RERA number</span></div>
+      <!-- Status filter -->
       <div class="filter-row">
-        <button class="filter-chip active" id="fAll" onclick="setFilter('all')">All</button>
-        <button class="filter-chip" id="fAct" onclick="setFilter('active')">✅ Active only</button>
-        <button class="filter-chip" id="fRev" onclick="setFilter('revoked')">🚨 Revoked only</button>
+        <button class="filter-chip active" id="fAll"  onclick="setFilter('all')">All</button>
+        <button class="filter-chip" id="fAct"  onclick="setFilter('active')">✅ Active only</button>
+        <button class="filter-chip" id="fRev"  onclick="setFilter('revoked')">🚨 Revoked only</button>
       </div>
     </div>
-    <div class="section-block" id="quickBlock"><div class="section-title">⚡ Popular Searches</div><div class="chips-wrap" id="quickChips"></div></div>
-    <div class="results-row" id="resRow" style="display:none"><div class="results-count" id="resCt"></div><div class="results-meta" id="resMeta"></div></div>
+
+    <!-- QUICK CHIPS -->
+    <div class="section-block" id="quickBlock">
+      <div class="section-title">⚡ Popular Searches</div>
+      <div class="chips-wrap" id="quickChips"></div>
+    </div>
+
+    <!-- RESULTS HEADER -->
+    <div class="results-row" id="resRow" style="display:none;">
+      <div class="results-count" id="resCt"></div>
+      <div class="results-meta" id="resMeta"></div>
+    </div>
+
+    <!-- RESULTS -->
     <div id="resCon"></div>
+
+    <!-- HISTORY -->
     <div id="histSec"></div>
+
   </div>
-  <div class="page" id="page-saved"><div style="padding:26px 0 16px"><h2 style="font-family:var(--f-display);font-size:var(--fs-2xl);color:var(--text)">🔖 Saved Projects</h2></div><div id="savedCon"></div></div>
+
+  <!-- ── SAVED PAGE ── -->
+  <div class="page" id="page-saved">
+    <div class="page-head">
+      <div class="page-head-title">🔖 Saved Projects</div>
+      <div class="page-head-sub">Your bookmarked projects for quick access</div>
+    </div>
+    <div id="savedCon"></div>
+  </div>
+
+  <!-- ── INSTALL GUIDE PAGE ── -->
   <div class="page" id="page-guide">
-  <div style="padding:26px 0 16px"><h2 style="font-family:var(--f-display);font-size:var(--fs-2xl);color:var(--text)">📲 Install the App</h2><p style="font-size:var(--fs-md);color:var(--text3);margin-top:4px">Add to your Home Screen in seconds</p></div>
-  
-  <div class="info-section">
-    <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">🤖 Android (Chrome)</h3>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7;margin-bottom:8px">1. Open this page in <strong>Chrome</strong></p>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7;margin-bottom:8px">2. Tap the three-dot menu ⋮ → <strong>"Add to Home Screen"</strong></p>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7;margin-bottom:8px">3. Confirm the name and tap <strong>"Add"</strong></p>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7">4. Open from home screen — it works like a native app!</p>
+    <div class="page-head">
+      <div class="page-head-title">📲 Install the App</div>
+      <div class="page-head-sub">Add to your Home Screen in seconds</div>
+    </div>
+
+    <!-- ANDROID -->
+    <div class="guide-section">
+      <h3>🤖 Android (Chrome)</h3>
+      <ul class="step-list">
+        <li class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <div class="step-title">Open this page in Chrome</div>
+            <div class="step-desc">Make sure you're using Google Chrome on your Android phone. Other browsers may not support installation.</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <div class="step-title">Tap the three-dot menu ⋮</div>
+            <div class="step-desc">Look for the three vertical dots in the top-right corner of Chrome and tap it to open the menu.</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <div class="step-title">Tap "Add to Home Screen"</div>
+            <div class="step-desc">You'll see this option in the menu. Tap it, confirm the name, then tap "Add". The app icon appears on your home screen.</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-text">
+            <div class="step-title">Open from Home Screen</div>
+            <div class="step-desc">Tap the Kevala Home icon on your home screen. It opens like a full-screen native app — no browser bar!</div>
+          </div>
+        </li>
+      </ul>
+      <div class="tip-box">
+        <div class="tip-ico">💡</div>
+        <div>On some Android phones, Chrome shows a banner at the bottom of the screen saying <strong>"Add Kevala Home to Home Screen"</strong> — you can tap that directly for a faster install.</div>
+      </div>
+    </div>
+
+    <!-- iOS -->
+    <div class="guide-section">
+      <h3>🍎 iPhone / iPad (Safari)</h3>
+      <ul class="step-list">
+        <li class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <div class="step-title">Open this page in Safari</div>
+            <div class="step-desc">On iPhone or iPad, you must use Safari (not Chrome) to install this app. Open Safari and go to this website.</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <div class="step-title">Tap the Share button</div>
+            <div class="step-desc">At the bottom of the screen, tap the Share icon — it looks like a box with an arrow pointing up (⬆️).</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <div class="step-title">Scroll down and tap "Add to Home Screen"</div>
+            <div class="step-desc">Scroll through the share sheet options until you see "Add to Home Screen". Tap it.</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-text">
+            <div class="step-title">Confirm the name and tap "Add"</div>
+            <div class="step-desc">A screen shows the app name. You can change it if you want. Tap "Add" in the top right. The icon appears on your home screen.</div>
+          </div>
+        </li>
+        <li class="step-item">
+          <div class="step-num">5</div>
+          <div class="step-text">
+            <div class="step-title">Open from Home Screen</div>
+            <div class="step-desc">Tap the Kevala Home icon. It launches in full-screen without the Safari address bar — just like a native app.</div>
+          </div>
+        </li>
+      </ul>
+      <div class="tip-box">
+        <div class="tip-ico">⚠️</div>
+        <div>On iPhone, only <strong>Safari</strong> can install web apps. If you're in Chrome or another browser, copy the URL and paste it into Safari first.</div>
+      </div>
+    </div>
+
+    <!-- WHY INSTALL -->
+    <div class="guide-section">
+      <h3>✨ Why Install?</h3>
+      <ul class="info-section" style="background:none; border:none; padding:0; margin:0;">
+        <li>Works offline — search projects without internet</li>
+        <li>Faster loading — no browser startup delay</li>
+        <li>Full-screen experience — no address bars</li>
+        <li>Quick access — one tap from home screen</li>
+        <li>Auto-sync — data refreshes automatically every 3 days</li>
+        <li>Saves to local storage — your bookmarks persist</li>
+      </ul>
+    </div>
   </div>
 
-  <div class="info-section">
-    <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">🍎 iPhone / iPad (Safari)</h3>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7;margin-bottom:8px">1. Open this page in <strong>Safari</strong> (not Chrome)</p>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7;margin-bottom:8px">2. Tap the <strong>Share</strong> button (📤) at the bottom</p>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7;margin-bottom:8px">3. Scroll down → <strong>"Add to Home Screen"</strong></p>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7">4. Tap <strong>"Add"</strong> — the icon appears on your home screen</p>
+  <!-- ── ABOUT PAGE ── -->
+  <div class="page" id="page-about">
+    <div class="page-head">
+      <div class="page-head-title">ℹ️ About & Resources</div>
+      <div class="page-head-sub">Official portals and legal information</div>
+    </div>
+
+    <div class="info-section">
+      <h3>🔗 Official Portal</h3>
+      <a class="link-row" href="https://rera.wb.gov.in/district_project.php?dcode=0" target="_blank" rel="noopener">
+        <div class="link-ico">🏛️</div>
+        <div class="link-info">
+          <div class="link-name">West Bengal HIRA / RERA</div>
+          <div class="link-url">rera.wb.gov.in</div>
+        </div>
+        <div class="link-arr">↗</div>
+      </a>
+      <a class="link-row" href="https://rera.mohua.gov.in" target="_blank" rel="noopener">
+        <div class="link-ico">🇮🇳</div>
+        <div class="link-info">
+          <div class="link-name">National RERA Portal</div>
+          <div class="link-url">rera.mohua.gov.in</div>
+        </div>
+        <div class="link-arr">↗</div>
+      </a>
+    </div>
+
+    <div class="info-section">
+      <h3>⚖️ What is RERA?</h3>
+      <p>The Real Estate (Regulation and Development) Act, 2016 protects homebuyers by requiring developers to register projects and maintain transparency on delivery timelines, fund usage, and approvals.</p>
+      <p>A valid RERA registration means the developer is legally accountable. Always verify before paying any advance amount.</p>
+    </div>
+
+    <div class="info-section">
+      <h3>✅ How to Use</h3>
+      <ul>
+        <li>Type any project name or RERA registration number</li>
+        <li>Filter by status — Active or Revoked</li>
+        <li>Tap "Verify Official" to confirm on the government site</li>
+        <li>Bookmark projects for quick access later</li>
+        <li>Share on WhatsApp with family &amp; friends</li>
+        <li>Install the app for offline access</li>
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <h3>⚠️ Disclaimer</h3>
+      <p style="font-size:var(--fs-sm); color:var(--text3); line-height:1.7;">Data is sourced from the official West Bengal RERA portal and synced periodically via Google Sheets. Always cross-verify on the official government website before making any financial decisions. This tool is for informational guidance only and does not constitute legal or financial advice.</p>
+    </div>
   </div>
 
-  <div class="info-section">
-    <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">✨ Why Install?</h3>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7">• Works offline — search projects without internet</p>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7">• Faster loading — no browser startup delay</p>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7">• Full-screen experience — no address bars</p>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7">• One tap from home screen</p>
-  </div>
-</div>
-
-<div class="page" id="page-about">
-  <div style="padding:26px 0 16px"><h2 style="font-family:var(--f-display);font-size:var(--fs-2xl);color:var(--text)">ℹ️ About & Resources</h2><p style="font-size:var(--fs-md);color:var(--text3);margin-top:4px">Official portals and legal information</p></div>
-
-  <div class="info-section">
-    <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">⚖️ What is RERA?</h3>
-    <p style="font-size:var(--fs-md);color:var(--text2);line-height:1.7">The Real Estate (Regulation and Development) Act, 2016 protects homebuyers by requiring developers to register projects and maintain transparency on delivery timelines, fund usage, and approvals.</p>
-  </div>
-
-  <div class="info-section">
-    <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">🔗 Official Portals</h3>
-    <a class="link-row" href="https://rera.wb.gov.in" target="_blank" rel="noopener">
-      <div class="link-ico">🏛️</div>
-      <div class="link-info"><div class="link-name">WB RERA Portal</div><div class="link-url">rera.wb.gov.in</div></div>
-      <div class="link-arr">↗</div>
-    </a>
-    <a class="link-row" href="https://kevalahome.github.io/wbcost" target="_blank" rel="noopener">
-      <div class="link-ico">💰</div>
-      <div class="link-info"><div class="link-name">WB True Cost Calculator</div><div class="link-url">Calculate total property cost</div></div>
-      <div class="link-arr">↗</div>
-    </a>
-  </div>
-
-  <div class="info-section">
-    <h3 style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text);margin-bottom:12px">⚠️ Disclaimer</h3>
-    <p style="font-size:var(--fs-sm);color:var(--text3);line-height:1.7">Data is sourced from the official West Bengal RERA portal. Always cross-verify on the official government website before making any financial decisions. This tool is for informational guidance only.</p>
-  </div>
-
-  <p style="text-align:center;font-size:var(--fs-sm);color:var(--text3);padding:16px">📧 Contact: info@kevalahome.com</p>
-</div>
 </main>
 
+<!-- ══════ BOTTOM NAV ══════ -->
 <nav class="bot-nav">
   <div class="bot-nav-inner">
-    <button class="nav-btn active" id="nav-search" onclick="setPage('search')"><div class="nav-ico">🔍</div><span>Search</span></button>
-    <button class="nav-btn" id="nav-saved" onclick="setPage('saved')"><div class="nav-ico">🔖<span class="nav-badge" id="bkBadge"></span></div><span>Saved</span></button>
-    <button class="nav-btn" id="nav-guide" onclick="setPage('guide')"><div class="nav-ico">📲</div><span>Install</span></button>
-    <button class="nav-btn" id="nav-about" onclick="setPage('about')"><div class="nav-ico">ℹ️</div><span>About</span></button>
+    <button class="nav-btn active" id="nav-search" onclick="setPage('search')">
+      <div class="nav-ico">🔍</div>
+      <span>Search</span>
+    </button>
+    <button class="nav-btn" id="nav-saved" onclick="setPage('saved')">
+      <div class="nav-ico" style="position:relative;">🔖<span class="nav-badge" id="bkBadge"></span></div>
+      <span>Saved</span>
+    </button>
+    <button class="nav-btn" id="nav-guide" onclick="setPage('guide')">
+      <div class="nav-ico">📲</div>
+      <span>Install</span>
+    </button>
+    <button class="nav-btn" id="nav-about" onclick="setPage('about')">
+      <div class="nav-ico">ℹ️</div>
+      <span>About</span>
+    </button>
   </div>
 </nav>
 
-<div class="toast" id="toast"></div>
+<!-- ══════ CHECKLIST MODAL ══════ -->
 <div class="modal-overlay" id="checkModal" onclick="closeCheckOutside(event)">
-  <div class="modal" style="max-width:500px;max-height:85vh;overflow-y:auto;border-radius:22px 22px 0 0;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%">
-    <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)">
-      <h3 style="font-family:var(--f-display);font-size:var(--fs-xl);color:var(--text);margin:0">📋 Buyer Safety Checklist</h3>
-      <button onclick="closeCheck()" style="background:var(--card);border:1.5px solid var(--border);border-radius:9px;color:var(--text2);font-size:18px;width:34px;height:34px;cursor:pointer">&times;</button>
-    </div>
-    <div style="padding:16px 20px 28px">
-      <p style="font-size:var(--fs-sm);color:var(--text3);margin-bottom:16px">10 things to verify before paying any advance on a property</p>
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">✅</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">RERA Registration is Active</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Verify the project on the official WB RERA portal. An active registration means the developer is legally accountable.</div></div></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">📅</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Completion Date is in the Future</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Check the promised possession date. If it has already passed, ask for a revised written timeline.</div></div></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,146,60,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">💳</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">70% Funds in Escrow Account</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Under RERA, 70% of buyer payments must be deposited in a separate bank account used only for this project.</div></div></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">📜</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Land Title is Clear</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Ask for an encumbrance certificate. Confirm there are no legal disputes on the land.</div></div></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,146,60,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🏗️</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Building Plan is Approved</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Ensure KMDA, municipal corporation, or relevant authority has sanctioned the building plan.</div></div></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">📖</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Read the Sale Agreement Carefully</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Check every clause — especially delay penalty, refund terms, and possession conditions before signing.</div></div></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,146,60,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🏦</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Project is Bank-Approved</div><div style="font-size:12px;color:var(--text3);line-height:1.5">If SBI, HDFC, or ICICI are offering home loans here, it signals that the bank has done due diligence.</div></div></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,113,133,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">⚠️</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Check for RERA Complaints</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Search the RERA portal for complaints against this developer or project. Multiple complaints = red flag.</div></div></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,146,60,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🔌</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Utility Approvals in Place</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Confirm water, electricity, and sewerage connections are approved or in progress.</div></div></div>
-      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🤝</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Developer Track Record</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Research the builder's previous projects. Visit a completed project and speak to residents.</div></div></div>
-      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);text-align:center">
-        <p style="font-size:var(--fs-sm);color:var(--text3);margin-bottom:4px">📧 Questions or feedback?</p>
-        <a href="mailto:info@kevalahome.com" style="color:var(--purple);font-weight:600;text-decoration:none;font-size:var(--fs-md)">info@kevalahome.com</a>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal-overlay" id="costModal" onclick="if(event.target===this)closeCostModal()">
   <div class="modal">
-    <h3>🧮 Total Cost Calculator</h3>
-<p style="font-size:12px;color:var(--text3);margin-bottom:16px;line-height:1.5;">Enter your expected agreement value and carpet area to calculate the total cost of this project. The pre-filled values are defaults — please edit them to match your specific property.</p>
-    <label>Agreement Value (₹)</label>
-    <input type="number" id="costPrice" value="8000000" min="100000" step="50000">
-    <label>Carpet Area (sq ft)</label>
-    <input type="number" id="costArea" value="900" min="50" step="10">
-    <div class="modal-buttons">
-      <button class="btn-secondary" onclick="closeCostModal()">Cancel</button>
-      <button class="btn-primary" onclick="openCostApp()">🧮 Calculate</button>
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">📋 Buyer Safety Checklist</div>
+      <button class="modal-close" onclick="closeCheck()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:var(--fs-sm);color:var(--text3);margin-bottom:16px;">10 things to verify before paying any advance on a property</p>
+      <div class="cl-item"><div class="cl-ico g">✅</div><div class="cl-text"><div class="cl-title">RERA Registration is Active</div><div class="cl-desc">Verify on the official WB RERA portal. Active means the developer is legally accountable for delivery.</div></div></div>
+      <div class="cl-item"><div class="cl-ico g">📅</div><div class="cl-text"><div class="cl-title">Completion Date is in the Future</div><div class="cl-desc">Check the promised possession date. If already past, request a written revised timeline before paying.</div></div></div>
+      <div class="cl-item"><div class="cl-ico o">💳</div><div class="cl-text"><div class="cl-title">70% Funds in Escrow</div><div class="cl-desc">Under RERA, 70% of buyer funds must be deposited in a designated account used only for this project.</div></div></div>
+      <div class="cl-item"><div class="cl-ico g">📜</div><div class="cl-text"><div class="cl-title">Land Title is Clear</div><div class="cl-desc">Ask for an encumbrance certificate. Confirm no legal disputes. Hire a property lawyer to verify title.</div></div></div>
+      <div class="cl-item"><div class="cl-ico o">🏗️</div><div class="cl-text"><div class="cl-title">Building Plan Approved</div><div class="cl-desc">Ensure KMDA, BIADA, or relevant authority has approved the plan. Ask for the approval number.</div></div></div>
+      <div class="cl-item"><div class="cl-ico g">📖</div><div class="cl-text"><div class="cl-title">Read the Sale Agreement</div><div class="cl-desc">Don't sign without reading every clause. Check for delay penalty clauses and refund conditions.</div></div></div>
+      <div class="cl-item"><div class="cl-ico o">🏦</div><div class="cl-text"><div class="cl-title">Project is Bank-Approved</div><div class="cl-desc">If SBI, HDFC, or ICICI are offering home loans here, it signals their due diligence has been done.</div></div></div>
+      <div class="cl-item"><div class="cl-ico r">⚠️</div><div class="cl-text"><div class="cl-title">Check RERA Complaints</div><div class="cl-desc">Search the RERA portal for complaints against this developer or project. Multiple complaints = red flag.</div></div></div>
+      <div class="cl-item"><div class="cl-ico o">🔌</div><div class="cl-text"><div class="cl-title">Utility Approvals in Place</div><div class="cl-desc">Confirm water, electricity, and sewerage approvals are obtained or in progress from authorities.</div></div></div>
+      <div class="cl-item"><div class="cl-ico g">🤝</div><div class="cl-text"><div class="cl-title">Developer Track Record</div><div class="cl-desc">Research previous projects. Visit a completed project if possible and speak to residents there.</div></div></div>
     </div>
   </div>
 </div>
+
+<!-- ══════ TOAST ══════ -->
+<div class="toast" id="toast"></div>
 
 <script>
-let PROJECTS_DATA=[],CERTIFICATES_DATA=[],CERT_LOOKUP={};
-const S={data:[],allResults:[],displayCount:20,filter:'all',query:'',bookmarks:[],history:[],darkMode:true,deferredInstall:null};
-const PAGE_SIZE=20,QUICK=['Merlin','Eden City','Shapoorji','PS Group','Hiland','Optima','Tata','Urbana','Crown','Diamond'];
-const PORTAL='https://rera.wb.gov.in/district_project.php?dcode=0';
-const COST_APP_URL='https://kevalahome.github.io/wbcost';
+// ════════════════════════════════════════════════
+// EMBEDDED DATA (Auto-generated by rebuild.py)
+// DO NOT EDIT MANUALLY — Run `python rebuild.py`
+// ════════════════════════════════════════════════
+/* Last data update: 2026-05-02 00:00 UTC | Approved: 0 | Rejected: 0 | Total: 0 */
+const EMBEDDED_APPROVED = [];
+const EMBEDDED_REJECTED = [];
+const FALLBACK_DATA = [...EMBEDDED_APPROVED, ...EMBEDDED_REJECTED];
 
-async function loadData(){
-  try{
-    const[a,r,c]=await Promise.all([fetch('/wbrera/data/approved.json').then(r=>r.json()),fetch('/wbrera/data/rejected.json').then(r=>r.json()),fetch('/wbrera/data/certificates.json').then(r=>r.json())]);
-    PROJECTS_DATA=[...a,...r];CERTIFICATES_DATA=c||[];
-    CERTIFICATES_DATA.forEach(c=>{if(c.rera_no)CERT_LOOKUP[c.rera_no.replace(/[\/\-]/g,'').toUpperCase()]=c});
-    S.data=PROJECTS_DATA;updateStats();return true;
-  }catch(e){console.warn(e);return false}
+// ════════════════════════════════════════════════
+// APP STATE
+// ════════════════════════════════════════════════
+const S = {
+  data: [],
+  allResults: [],
+  displayCount: 20,
+  filter: 'all',
+  query: '',
+  bookmarks: [],
+  history: [],
+  darkMode: true,
+  deferredInstall: null,
+};
+const PAGE_SIZE = 20;
+
+const QUICK = ['Merlin', 'Eden City', 'Shapoorji', 'PS Group', 'Hiland', 'Optima', 'Tata', 'Urbana', 'Crown', 'Diamond'];
+const PORTAL = 'https://rera.wb.gov.in/district_project.php?dcode=0';
+
+// ════════════════════════════════════════════════
+// THEME
+// ════════════════════════════════════════════════
+function toggleTheme() {
+  S.darkMode = !S.darkMode;
+  applyTheme();
+  localStorage.setItem('kvl_theme', S.darkMode ? 'dark' : 'light');
+}
+function applyTheme() {
+  document.body.classList.toggle('light', !S.darkMode);
+  document.getElementById('themeBtn').textContent = S.darkMode ? '🌙' : '☀️';
 }
 
-function getCertificateForProject(reraNo){
-  if(!reraNo)return null;
-  const k=reraNo.replace(/[\/\-_\.\s]/g,'').toUpperCase();
-  if(CERT_LOOKUP[k])return CERT_LOOKUP[k];
-  for(const[kk,v]of Object.entries(CERT_LOOKUP)){if(k.includes(kk)||kk.includes(k))return v}
-  return null;
+// ════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════
+function setPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page).classList.add('active');
+  if (page === 'saved') renderSaved();
 }
 
-function sqmToSqft(sqm){if(!sqm)return null;return Math.round(parseFloat(sqm)*10.764).toLocaleString('en-IN')}
-function fmtNum(n){if(!n&&n!==0)return null;return parseInt(n).toLocaleString('en-IN')}
-
-function hl(t,q){if(!q||q.length<2||!t)return t||'';try{return t.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi'),'<mark>$1</mark>')}catch(e){return t}}
-function esc(s){return(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;')}
-
-function toggleTheme(){S.darkMode=!S.darkMode;applyTheme();localStorage.setItem('kvl_theme',S.darkMode?'dark':'light')}
-function applyTheme(){document.body.classList.toggle('light',!S.darkMode);document.getElementById('themeBtn').textContent=S.darkMode?'🌙':'☀️'}
-
-function setPage(p){
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
-  document.getElementById('nav-'+p).classList.add('active');
-  if(p==='saved')renderSaved();
+// ════════════════════════════════════════════════
+// FILTER
+// ════════════════════════════════════════════════
+function setFilter(f) {
+  S.filter = f;
+  ['All','Act','Rev'].forEach(id => document.getElementById('f'+id).classList.remove('active'));
+  document.getElementById(f === 'all' ? 'fAll' : f === 'active' ? 'fAct' : 'fRev').classList.add('active');
+  if (S.query.length >= 2) performSearch();
 }
 
-function setFilter(f){S.filter=f;['All','Act','Rev'].forEach(id=>document.getElementById('f'+id).classList.remove('active'));document.getElementById(f==='all'?'fAll':f==='active'?'fAct':'fRev').classList.add('active');if(S.query.length>=2)performSearch()}
-
+// ════════════════════════════════════════════════
+// SEARCH
+// ════════════════════════════════════════════════
 let searchTmr;
-function onSearch(){
-  const q=document.getElementById('searchInput').value.trim();S.query=q;
-  document.getElementById('clearBtn').classList.toggle('show',q.length>0);
-  document.getElementById('quickBlock').style.display=q.length>0?'none':'block';
+
+function onSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  S.query = q;
+  document.getElementById('clearBtn').classList.toggle('show', q.length > 0);
+  document.getElementById('quickBlock').style.display = q.length > 0 ? 'none' : 'block';
   clearTimeout(searchTmr);
-  if(q.length<2){document.getElementById('resCon').innerHTML='';document.getElementById('resRow').style.display='none';renderHistory();return}
-  document.getElementById('histSec').innerHTML='';searchTmr=setTimeout(performSearch,220);
+  if (q.length < 2) {
+    document.getElementById('resCon').innerHTML = '';
+    document.getElementById('resRow').style.display = 'none';
+    renderHistory();
+    return;
+  }
+  document.getElementById('histSec').innerHTML = '';
+  showSkeletons();
+  searchTmr = setTimeout(performSearch, 220);
 }
 
-function performSearch(){
-  const q=S.query.toLowerCase();
-  let r=S.data.filter(p=>p.name.toLowerCase().includes(q)||p.rera.toLowerCase().includes(q)||p.id.toLowerCase().includes(q));
-  if(S.filter==='active')r=r.filter(p=>p.s==='A');
-  if(S.filter==='revoked')r=r.filter(p=>p.s==='R');
-  S.allResults=r;S.displayCount=PAGE_SIZE;renderResults();addHistory(S.query);
+function performSearch() {
+  const q = S.query.toLowerCase();
+  let results = S.data.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.rera.toLowerCase().includes(q) ||
+    p.id.toLowerCase().includes(q)
+  );
+  if (S.filter === 'active')  results = results.filter(p => p.s === 'A');
+  if (S.filter === 'revoked') results = results.filter(p => p.s === 'R');
+  S.allResults = results;
+  S.displayCount = PAGE_SIZE;
+  renderResults();
+  addHistory(S.query);
 }
 
-function clearSearch(){
-  document.getElementById('searchInput').value='';S.query='';
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  S.query = '';
   document.getElementById('clearBtn').classList.remove('show');
-  document.getElementById('resCon').innerHTML='';document.getElementById('resRow').style.display='none';
-  document.getElementById('quickBlock').style.display='block';renderHistory();
+  document.getElementById('resCon').innerHTML = '';
+  document.getElementById('resRow').style.display = 'none';
+  document.getElementById('quickBlock').style.display = 'block';
+  renderHistory();
 }
 
-function renderResults(){
-  const c=document.getElementById('resCon'),t=S.allResults.length,n=Math.min(S.displayCount,t);
-  if(t===0){document.getElementById('resRow').style.display='none';c.innerHTML='<div class="state-view"><h3>No projects found</h3></div>';return}
-  document.getElementById('resRow').style.display='flex';
-  document.getElementById('resCt').innerHTML=`Showing <strong>${n}</strong> of <strong>${t}</strong>`;
-  document.getElementById('resMeta').textContent='West Bengal RERA';
-  let h=S.allResults.slice(0,n).map((p,i)=>cardHTML(p,i)).join('');
-  if(n<t)h+=`<button class="load-more" onclick="loadMore()">Load more</button>`;
-  c.innerHTML=h;
+function showSkeletons() {
+  document.getElementById('resRow').style.display = 'none';
+  document.getElementById('resCon').innerHTML = [1,2,3].map(() => `
+    <div class="skel-card">
+      <div class="skeleton" style="width:65%;height:20px;"></div>
+      <div class="skeleton" style="width:40%;height:14px;margin-top:6px;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px;">
+        <div class="skeleton" style="height:54px;border-radius:8px;"></div>
+        <div class="skeleton" style="height:54px;border-radius:8px;"></div>
+      </div>
+    </div>
+  `).join('');
 }
-function loadMore(){S.displayCount+=PAGE_SIZE;renderResults()}
 
-function cardHTML(p,idx){
-  const saved=S.bookmarks.some(b=>b.id===p.id),cert=getCertificateForProject(p.rera);
-  const sc=p.s==='A'?'a':'r',sl=p.s==='A'?'✅ Active':'❌ Revoked';
-  const df=p.s==='R'?`<div class="card-field"><div class="field-label">Revoke Date</div><div class="field-val">${p.rev||'—'}</div></div>`:`<div class="card-field"><div class="field-label">Reg. Date</div><div class="field-val">${p.reg||'—'}</div></div>`;
+// ════════════════════════════════════════════════
+// RENDER RESULTS
+// ════════════════════════════════════════════════
+function renderResults() {
+  const con = document.getElementById('resCon');
+  const total = S.allResults.length;
+  const shown = Math.min(S.displayCount, total);
+  const page  = S.allResults.slice(0, shown);
 
-  // --- Additional project details from JSON ---
-  const carpetSqft = sqmToSqft(p.carpet_sqm);
-  const builtupSqft = sqmToSqft(p.builtup_sqm);
-  const landSqft = sqmToSqft(p.land_sqm);
+  if (total === 0) {
+    document.getElementById('resRow').style.display = 'none';
+    con.innerHTML = `
+      <div class="state-view">
+        <div class="state-icon">🔍</div>
+        <h3>No projects found</h3>
+        <p>Try a different spelling or search directly on the official portal</p>
+        <button onclick="window.open('${PORTAL}','_blank','noopener')"
+          style="margin-top:18px;padding:13px 26px;background:linear-gradient(135deg,var(--purple3),var(--pink2));border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;">
+          Open Official RERA Site ↗
+        </button>
+      </div>`;
+    return;
+  }
 
-  // Row 1: District + PIN
-  const districtField = (p.district||p.pin) ? `<div class="card-field">
-    <div class="field-label">📍 District</div>
-    <div class="field-val">${p.district||'—'}${p.pin?` · ${p.pin}`:''}` + `</div></div>` : '';
+  document.getElementById('resRow').style.display = 'flex';
+  document.getElementById('resCt').innerHTML  = `Showing <strong>${shown}</strong> of <strong>${total}</strong> result${total !== 1 ? 's' : ''}`;
+  document.getElementById('resMeta').textContent = 'West Bengal RERA';
 
-  // Row 1b: Project Type
-  const typeField = p.type ? `<div class="card-field">
-    <div class="field-label">🏷️ Type</div>
-    <div class="field-val">${p.type}</div></div>` : '';
+  let html = page.map((p, i) => cardHTML(p, i)).join('');
+  if (shown < total) {
+    html += `<button class="load-more" onclick="loadMore()">Load ${Math.min(PAGE_SIZE, total - shown)} more ↓ (${total - shown} remaining)</button>`;
+  }
+  con.innerHTML = html;
+}
 
-  // Row 2: Units + Parking
-  const unitsField = (p.units||p.parking) ? `<div class="card-field">
-    <div class="field-label">🏠 Units</div>
-    <div class="field-val">${p.units ? fmtNum(p.units)+' units' : '—'}${p.parking ? ` · 🅿️ ${fmtNum(p.parking)}` : ''}</div></div>` : '';
+function loadMore() {
+  S.displayCount += PAGE_SIZE;
+  renderResults();
+}
 
-  // Row 2b: Construction Status
-  const statusDetailField = p.status_detail ? `<div class="card-field">
-    <div class="field-label">🏗️ Work Status</div>
-    <div class="field-val">${p.status_detail}</div></div>` : '';
+function cardHTML(p, idx) {
+  const saved = S.bookmarks.some(b => b.id === p.id);
+  const flags = getFlags(p);
+  const delay = Math.min(idx * 0.04, 0.28);
+  const statusCls = p.s === 'A' ? 'a' : p.s === 'R' ? 'r' : 'l';
+  const statusLbl = p.s === 'A' ? '✅ Active' : p.s === 'R' ? '❌ Revoked' : '⚠️ Lapsed';
+  const dateField  = p.s === 'R'
+    ? `<div class="card-field"><div class="field-label">Revoke Date</div><div class="field-val">${p.rev || '—'}</div></div>`
+    : `<div class="card-field"><div class="field-label">Reg. Date</div><div class="field-val">${p.reg || '—'}</div></div>`;
+  const eid = esc(p.id);
 
-  // Row 3: Area fields (carpet + builtup + land in one span2 cell)
-  let areaRows = '';
-  if(carpetSqft || builtupSqft || landSqft){
-    const parts=[];
-    if(carpetSqft) parts.push(`<span style="margin-right:12px">🛋️ <strong>Carpet:</strong> ${carpetSqft} sq ft</span>`);
-    if(builtupSqft) parts.push(`<span style="margin-right:12px">🏢 <strong>Built-up:</strong> ${builtupSqft} sq ft</span>`);
-    if(landSqft) parts.push(`<span>🌳 <strong>Land:</strong> ${landSqft} sq ft</span>`);
-    areaRows = `<div class="card-field span2">
-      <div class="field-label">📐 Areas</div>
-      <div class="field-val" style="display:flex;flex-wrap:wrap;gap:4px 0">${parts.join('')}</div>
+  return `
+    <div class="proj-card${p.s === 'R' ? ' revoked-card' : ''}" style="animation-delay:${delay}s">
+      <div class="card-top">
+        <div class="card-name-block">
+          <div class="card-name">${hl(p.name, S.query)}</div>
+          <div class="card-id">🆔 ${p.id}</div>
+        </div>
+        <button class="bkmark-btn${saved ? ' saved' : ''}" onclick="toggleSave('${eid}')" title="${saved ? 'Remove' : 'Save'}">🔖</button>
+      </div>
+      <div class="card-grid">
+        <div class="card-field span2">
+          <div class="field-label">Registration No.</div>
+          <div class="field-val" style="font-size:var(--fs-xs);">${hl(p.rera, S.query)}</div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Status</div>
+          <div class="field-val"><span class="status-badge ${statusCls}">${statusLbl}</span></div>
+        </div>
+        <div class="card-field">
+          <div class="field-label">Completion</div>
+          <div class="field-val">${p.comp || '—'}</div>
+        </div>
+        ${dateField}
+      </div>
+      ${flags.length ? `<div class="card-flags">${flags.map(f => `<div class="flag ${f.c}">${f.i} ${f.t}</div>`).join('')}</div>` : ''}
+      <div class="card-actions">
+        <button class="btn-verify" onclick="verifyProject('${esc(p.name)}','${esc(p.rera)}')">🛡️ Verify Official</button>
+        <button class="btn-share" onclick="shareProject('${esc(p.name)}','${esc(p.rera)}')">📤 Share</button>
+      </div>
     </div>`;
-  }
-
-  // Developer / promoter address
-  const addrField = p.addr ? `<div class="card-field span2">
-    <div class="field-label">🏢 Promoter</div>
-    <div class="field-val" style="word-break:break-word">${p.addr}</div></div>` : '';
-
-  // Cert extras (from certificates.json)
-  let certHTML='',certBtn='';
-  if(cert){
-    const d=[];
-    if(cert.developer_name)d.push(`<span>🏢 ${cert.developer_name}</span>`);
-    if(cert.total_units)d.push(`<span>🏠 ${cert.total_units} units</span>`);
-    if(cert.project_type)d.push(`<span>📐 ${cert.project_type}</span>`);
-    if(cert.project_status)d.push(`<span>📊 ${cert.project_status}</span>`);
-    if(d.length)certHTML=`<div class="card-flags">${d.map(x=>`<div class="flag flag-info">${x}</div>`).join('')}</div>`;
-    certBtn=`<button class="btn-cert" onclick="viewCert('${esc(cert.rera_no)}')">📄 View RERA Certificate</button>`;
-  }
-
-  const statusFlag=p.s==='R'?'<div class="flag flag-danger">🚨 Registration Revoked</div>':'<div class="flag flag-ok">✅ Registered & Active</div>';
-
-  return `<div class="proj-card${p.s==='R'?' revoked-card':''}">
-    <div class="card-top"><div class="card-name-block"><div class="card-name">${hl(p.name,S.query)}</div><div class="card-id">🆔 ${p.id}</div></div><button class="bkmark-btn${saved?' saved':''}" onclick="toggleSave('${esc(p.id)}')">🔖</button></div>
-    <div class="card-grid">
-      <div class="card-field span2"><div class="field-label">Registration No.</div><div class="field-val">${hl(p.rera,S.query)}</div></div>
-      <div class="card-field"><div class="field-label">Status</div><div class="field-val"><span class="status-badge ${sc}">${sl}</span></div></div>
-      <div class="card-field"><div class="field-label">Completion</div><div class="field-val">${p.comp||'—'}</div></div>
-      ${df}
-      ${districtField}
-      ${typeField}
-      ${unitsField}
-      ${statusDetailField}
-      ${areaRows}
-      ${addrField}
-    </div>
-    ${certHTML}
-    <div class="card-flags">${statusFlag}</div>
-    <div class="card-actions">
-      <button class="btn-verify" onclick="window.open('${PORTAL}','_blank')">🛡️ Verify Official</button>
-      <button class="btn-share" onclick="shareProject('${esc(p.name)}','${esc(p.rera)}')">📤 Share</button>
-    </div>
-    <div class="feedback-row" id="fb-${esc(p.id)}">
-      <span>Was this helpful?</span>
-      <button class="feedback-yes" onclick="feedbackYes('${esc(p.id)}','${esc(p.name)}')">👍 Yes</button>
-      <button class="feedback-no" onclick="feedbackNo('${esc(p.id)}','${esc(p.name)}')">📧 No</button>
-    </div>
-    <div class="card-actions"><button class="btn-cost" onclick="showCostModal()">🧮 Total Cost Calculator</button></div>
-    ${certBtn?`<div style="padding:0 16px 16px">${certBtn}</div>`:''}
-  </div>`;
 }
 
-function showCostModal(){document.getElementById('costModal').classList.add('show')}
-function closeCostModal(){document.getElementById('costModal').classList.remove('show')}
-function openCostApp(){
-  const price=document.getElementById('costPrice').value||'8000000';
-  const area=document.getElementById('costArea').value||'900';
-  closeCostModal();
-  window.open(`${COST_APP_URL}?price=${price}&area=${area}&type=uc`,'_blank');
+function getFlags(p) {
+  if (p.s === 'R') return [{ c: 'flag-danger', i: '🚨', t: 'Registration Revoked — Do Not Buy' }];
+  if (p.s === 'L') return [{ c: 'flag-warn', i: '⚠️', t: 'Registration Lapsed — Verify Before Proceeding' }];
+  return [{ c: 'flag-ok', i: '✅', t: 'Registered & Active' }];
 }
 
-function viewCert(reraNo){const c=getCertificateForProject(reraNo);window.open(c&&c.filename?'certificates/'+c.filename:PORTAL,'_blank')}
-function feedbackYes(id, name) {
-  const el = document.getElementById('fb-' + id);
-  if (el) {
-    el.innerHTML = '<div class="feedback-thanks">Thanks for the feedback! ✨</div>';
-    setTimeout(() => { if (el) el.style.opacity = '0'; }, 2000);
-  }
+function hl(text, query) {
+  if (!query || query.length < 2 || !text) return text || '';
+  try {
+    const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return text.replace(re, '<mark style="background:rgba(192,132,252,0.22);color:var(--purple);border-radius:3px;padding:0 2px;">$1</mark>');
+  } catch(e) { return text; }
 }
 
-function feedbackNo(id, name) {
-  const subject = encodeURIComponent('Missing info for ' + name);
-  window.location.href = 'mailto:info@kevalahome.com?subject=' + subject;
+function esc(s) { return (s||'').replace(/'/g,"\'").replace(/"/g,'&quot;'); }
+
+// ════════════════════════════════════════════════
+// QUICK CHIPS// ════════════════════════════════════════════════
+function renderQuickChips() {
+  document.getElementById('quickChips').innerHTML = QUICK.map(q =>
+    `<button class="chip" onclick="quickSearch('${q}')">${q}</button>`
+  ).join('');
 }
-function shareProject(name,rera){const t=`🏠 ${name}\n📋 ${rera}\n\nVerify: ${PORTAL}`;if(navigator.share)navigator.share({title:name,text:t}).catch(()=>{});else window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank')}
 
-function renderQuickChips(){document.getElementById('quickChips').innerHTML=QUICK.map(q=>`<button class="chip" onclick="quickSearch('${q}')">${q}</button>`).join('')}
-function quickSearch(q){document.getElementById('searchInput').value=q;S.query=q;document.getElementById('clearBtn').classList.add('show');document.getElementById('quickBlock').style.display='none';document.getElementById('histSec').innerHTML='';setTimeout(performSearch,250)}
-function addHistory(q){if(!q)return;S.history=S.history.filter(h=>h!==q);S.history.unshift(q);S.history=S.history.slice(0,8);localStorage.setItem('kvl_hist',JSON.stringify(S.history))}
-function renderHistory(){const c=document.getElementById('histSec');if(!S.history.length){c.innerHTML='';return}c.innerHTML=`<div class="panel"><div class="panel-head"><span style="font-family:var(--f-display);font-size:var(--fs-lg);color:var(--text)">🕐 Recent</span><span style="font-size:var(--fs-sm);color:var(--text3);cursor:pointer" onclick="clearHistory()">Clear</span></div>${S.history.map(q=>`<div class="hist-item" onclick="quickSearch('${esc(q)}')"><span>🔍</span><span class="hist-name">${q}</span></div>`).join('')}</div>`}
-function clearHistory(){S.history=[];localStorage.removeItem('kvl_hist');renderHistory()}
+function quickSearch(q) {
+  document.getElementById('searchInput').value = q;
+  S.query = q;
+  document.getElementById('clearBtn').classList.add('show');
+  document.getElementById('quickBlock').style.display = 'none';
+  document.getElementById('histSec').innerHTML = '';
+  showSkeletons();
+  setTimeout(performSearch, 250);
+}
 
-function toggleSave(id){const p=S.data.find(x=>x.id===id);if(!p)return;const i=S.bookmarks.findIndex(b=>b.id===id);if(i>=0)S.bookmarks.splice(i,1);else S.bookmarks.unshift({...p});localStorage.setItem('kvl_bk',JSON.stringify(S.bookmarks));updateBadge();if(S.allResults.length)renderResults()}
-function renderSaved(){const c=document.getElementById('savedCon');if(!S.bookmarks.length){c.innerHTML='<div class="state-view"><h3>No saved projects</h3></div>';return}c.innerHTML=S.bookmarks.map((p,i)=>cardHTML(p,i)).join('')}
-function updateBadge(){const b=document.getElementById('bkBadge');b.textContent=S.bookmarks.length;b.classList.toggle('show',S.bookmarks.length>0)}
+// ════════════════════════════════════════════════
+// HISTORY
+// ════════════════════════════════════════════════
+function addHistory(q) {
+  if (!q || q.length < 2) return;
+  S.history = S.history.filter(h => h !== q);
+  S.history.unshift(q);
+  S.history = S.history.slice(0, 8);
+  localStorage.setItem('kvl_hist', JSON.stringify(S.history));
+}
 
-function updateStats(){document.getElementById('statTotal').textContent=S.data.length.toLocaleString('en-IN');document.getElementById('statActive').textContent=S.data.filter(p=>p.s==='A').length.toLocaleString('en-IN');document.getElementById('statRevoked').textContent=S.data.filter(p=>p.s==='R').length.toLocaleString('en-IN')}
+function renderHistory() {
+  const con = document.getElementById('histSec');
+  if (!S.history.length) { con.innerHTML = ''; return; }
+  con.innerHTML = `
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">🕐 Recent Searches</div>
+        <div class="panel-clear" onclick="clearHistory()">Clear all</div>
+      </div>
+      ${S.history.map(q => `
+        <div class="hist-item" onclick="quickSearch('${esc(q)}')">
+          <span class="hist-ico">🔍</span>
+          <span class="hist-name">${q}</span>
+        </div>`).join('')}
+    </div>`;
+}
 
-function showChecklist(){document.getElementById('checkModal').classList.add('show');document.body.style.overflow='hidden'}
-function closeCheck(){document.getElementById('checkModal').classList.remove('show');document.body.style.overflow=''}
-function closeCheckOutside(e){if(e.target===document.getElementById('checkModal'))closeCheck()}
-function setupInstall(){window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();S.deferredInstall=e;if(!localStorage.getItem('kvl_inst_dismissed'))document.getElementById('installBanner').style.display='flex'});window.addEventListener('appinstalled',()=>{document.getElementById('installBanner').style.display='none'})}
-function triggerInstall(){if(S.deferredInstall)S.deferredInstall.prompt();else setPage('guide')}
-function dismissInstall(e){e.stopPropagation();document.getElementById('installBanner').style.display='none';localStorage.setItem('kvl_inst_dismissed','1')}
+function clearHistory() {
+  S.history = [];
+  localStorage.removeItem('kvl_hist');
+  renderHistory();
+  showToast('History cleared');
+}
 
-let toastTmr;
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.classList.remove('show'),2500)}
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/wbrera/sw.js').catch(()=>{}));
-
-async function init(){
-  const t=localStorage.getItem('kvl_theme');S.darkMode=t!=='light';applyTheme();
-  try{S.bookmarks=JSON.parse(localStorage.getItem('kvl_bk')||'[]')}catch(e){}
-  try{S.history=JSON.parse(localStorage.getItem('kvl_hist')||'[]')}catch(e){}
+// ════════════════════════════════════════════════
+// BOOKMARKS
+// ════════════════════════════════════════════════
+function toggleSave(id) {
+  const project = S.data.find(p => p.id === id);
+  if (!project) return;
+  const idx = S.bookmarks.findIndex(b => b.id === id);
+  if (idx >= 0) { S.bookmarks.splice(idx, 1); showToast('Removed from saved'); }
+  else { S.bookmarks.unshift({ ...project }); showToast('Project saved! 🔖'); }
+  localStorage.setItem('kvl_bk', JSON.stringify(S.bookmarks));
   updateBadge();
-  document.getElementById('syncDot').style.background='var(--gold)';
-  const ok=await loadData();
-  document.getElementById('syncDot').style.background=ok?'var(--green)':'var(--orange)';
-  document.getElementById('syncText').textContent=ok?'Offline‑ready · Dynamic loading':'Using cached data';
-  renderQuickChips();renderHistory();setupInstall();
+  if (S.allResults.length > 0) renderResults();
 }
-document.addEventListener('DOMContentLoaded',init);
+
+function renderSaved() {
+  const con = document.getElementById('savedCon');
+  if (!S.bookmarks.length) {
+    con.innerHTML = `
+      <div class="state-view">
+        <div class="state-icon">🔖</div>
+        <h3>No saved projects yet</h3>
+        <p>Search for a project and tap 🔖 to save it here</p>
+      </div>`;
+    return;
+  }
+  con.innerHTML = `<p style="font-size:var(--fs-md);color:var(--text3);margin-bottom:14px;">${S.bookmarks.length} saved project${S.bookmarks.length !== 1 ? 's' : ''}</p>`
+    + S.bookmarks.map((p, i) => cardHTML(p, i)).join('');
+}
+
+function updateBadge() {
+  const badge = document.getElementById('bkBadge');
+  const n = S.bookmarks.length;
+  badge.textContent = n;
+  badge.classList.toggle('show', n > 0);
+}
+
+// ════════════════════════════════════════════════
+// ACTIONS
+// ════════════════════════════════════════════════
+function verifyProject(name, rera) {
+  window.open(PORTAL, '_blank', 'noopener');
+  showToast('Opening WB RERA portal…');
+}
+
+function shareProject(name, rera) {
+  const text = `🏠 *${name}*\n📋 Registration No: ${rera}\n📍 West Bengal RERA\n\n✅ Verify here:\n${PORTAL}\n\n_Via Kevala Home RERA Check_`;
+  if (navigator.share) {
+    navigator.share({ title: 'RERA Check: ' + name, text }).catch(() => {});
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
+  }
+}
+
+// ════════════════════════════════════════════════
+// UPDATE STATS
+// ════════════════════════════════════════════════
+function updateStats() {
+  const total   = S.data.length;
+  const active  = S.data.filter(p => p.s === 'A').length;
+  const revoked = S.data.filter(p => p.s === 'R').length;
+  document.getElementById('statTotal').textContent   = total.toLocaleString('en-IN');
+  document.getElementById('statActive').textContent  = active.toLocaleString('en-IN');
+  document.getElementById('statRevoked').textContent = revoked.toLocaleString('en-IN');
+}
+
+// ════════════════════════════════════════════════
+// CHECKLIST
+// ════════════════════════════════════════════════
+function showChecklist() {
+  document.getElementById('checkModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeCheck() {
+  document.getElementById('checkModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+function closeCheckOutside(e) {
+  if (e.target === document.getElementById('checkModal')) closeCheck();
+}
+
+// ════════════════════════════════════════════════
+// INSTALL PWA
+// ════════════════════════════════════════════════
+function setupInstall() {
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault(); S.deferredInstall = e;
+    if (!localStorage.getItem('kvl_inst_dismissed')) {
+      document.getElementById('installBanner').style.display = 'flex';
+    }
+  });
+  window.addEventListener('appinstalled', () => {
+    document.getElementById('installBanner').style.display = 'none';
+    showToast('App installed! ✅');
+  });
+}
+function triggerInstall() {
+  if (S.deferredInstall) {
+    S.deferredInstall.prompt();
+    S.deferredInstall.userChoice.then(() => {
+      S.deferredInstall = null;
+      document.getElementById('installBanner').style.display = 'none';
+    });
+  } else { setPage('guide'); }
+}
+function dismissInstall(e) {
+  e.stopPropagation();
+  document.getElementById('installBanner').style.display = 'none';
+  localStorage.setItem('kvl_inst_dismissed', '1');
+}
+
+// ════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════
+let toastTmr;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTmr);
+  toastTmr = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ════════════════════════════════════════════════
+// SERVICE WORKER
+// ════════════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+function init() {
+  // Theme
+  const t = localStorage.getItem('kvl_theme');
+  S.darkMode = t !== 'light';
+  applyTheme();
+
+  // Bookmarks + history
+  try { const b = localStorage.getItem('kvl_bk'); if (b) S.bookmarks = JSON.parse(b); } catch(e) {}
+  try { const h = localStorage.getItem('kvl_hist'); if (h) S.history = JSON.parse(h); } catch(e) {}
+  updateBadge();
+
+  // Load data from embedded arrays
+  S.data = [...EMBEDDED_APPROVED, ...EMBEDDED_REJECTED];
+  updateStats();
+  renderQuickChips();
+  renderHistory();
+  setupInstall();
+}
+
+document.addEventListener('DOMContentLoaded', init);
 </script>
+
 </body>
 </html>
