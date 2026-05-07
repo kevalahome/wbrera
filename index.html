@@ -105,9 +105,13 @@ body.light .card-name{color:var(--text)}
 .card-actions{padding:0 16px 16px;display:flex;gap:9px}
 .btn-verify{flex:1;padding:13px 16px;background:linear-gradient(135deg,var(--purple3),var(--pink2));border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
 .btn-share{padding:13px 16px;background:rgba(251,191,36,0.1);border:1.5px solid rgba(251,191,36,0.35);border-radius:var(--radius-sm);color:var(--gold);font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.feedback-row{display:flex;align-items:center;gap:10px;padding:12px 16px;margin:0 16px 14px;background:var(--bg2);border-radius:var(--radius-sm);border:1px solid var(--border);font-size:var(--fs-sm);color:var(--text2)}
+.feedback-row span{flex-shrink:0;font-weight:500}
+.feedback-yes,.feedback-no{flex:1;padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);color:var(--text2);font-size:var(--fs-sm);font-weight:600;cursor:pointer;text-align:center;transition:all 0.15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.feedback-yes:hover,.feedback-no:hover{border-color:var(--purple);color:var(--purple)}
+.feedback-thanks{text-align:center;padding:10px;color:var(--green);font-size:var(--fs-sm);font-weight:500;animation:fadeUp 0.3s ease}
 .btn-cert{width:100%;padding:12px 16px;background:rgba(52,211,153,0.1);border:1.5px solid rgba(52,211,153,0.3);border-radius:var(--radius-sm);color:var(--green);font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
-.btn-cost{flex:1;padding:13px 16px;background:linear-gradient(135deg,var(--gold2),var(--gold));border:none;border-radius:var(--radius-sm);color:#1a0a2e;font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}
-.state-view{padding:48px 24px;text-align:center;color:var(--text3)}
+.btn-cost{flex:1;padding:13px 16px;background:linear-gradient(135deg,var(--purple3),var(--pink2));border:none;border-radius:var(--radius-sm);color:#fff;font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}.state-view{padding:48px 24px;text-align:center;color:var(--text3)}
 .load-more{width:100%;padding:16px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--purple);font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;margin-bottom:14px}
 .panel{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:16px}
 .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
@@ -165,9 +169,9 @@ body.light .card-name{color:var(--text)}
       <p class="hero-sub">Check RERA registration status of any West Bengal real estate project instantly — free &amp; official.</p>
       <div class="hero-badges"><span class="hero-badge offline">Works Offline</span></div>
       <div class="stats-strip">
-        <div class="stat-item"><div class="stat-num" id="statTotal">4,265</div><div class="stat-label">Projects</div></div>
-        <div class="stat-item"><div class="stat-num" id="statActive">4,251</div><div class="stat-label">Active</div></div>
-        <div class="stat-item"><div class="stat-num" id="statRevoked">14</div><div class="stat-label">Revoked</div></div>
+        <div class="stat-item"><div class="stat-num" id="statTotal">—</div><div class="stat-label">Projects</div></div>
+        <div class="stat-item"><div class="stat-num" id="statActive">—</div><div class="stat-label">Active</div></div>
+        <div class="stat-item"><div class="stat-num" id="statRevoked">—</div><div class="stat-label">Revoked</div></div>
       </div>
     </div>
     <div class="install-banner" id="installBanner" style="display:none" onclick="triggerInstall()">
@@ -208,10 +212,35 @@ body.light .card-name{color:var(--text)}
 </nav>
 
 <div class="toast" id="toast"></div>
-
+<div class="modal-overlay" id="checkModal" onclick="closeCheckOutside(event)">
+  <div class="modal" style="max-width:500px;max-height:85vh;overflow-y:auto;border-radius:22px 22px 0 0;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%">
+    <div class="modal-header" style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)">
+      <h3 style="font-family:var(--f-display);font-size:var(--fs-xl);color:var(--text);margin:0">📋 Buyer Safety Checklist</h3>
+      <button onclick="closeCheck()" style="background:var(--card);border:1.5px solid var(--border);border-radius:9px;color:var(--text2);font-size:18px;width:34px;height:34px;cursor:pointer">&times;</button>
+    </div>
+    <div style="padding:16px 20px 28px">
+      <p style="font-size:var(--fs-sm);color:var(--text3);margin-bottom:16px">10 things to verify before paying any advance on a property</p>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">✅</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">RERA Registration is Active</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Verify the project on the official WB RERA portal. An active registration means the developer is legally accountable.</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">📅</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Completion Date is in the Future</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Check the promised possession date. If it has already passed, ask for a revised written timeline.</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,146,60,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">💳</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">70% Funds in Escrow Account</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Under RERA, 70% of buyer payments must be deposited in a separate bank account used only for this project.</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">📜</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Land Title is Clear</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Ask for an encumbrance certificate. Confirm there are no legal disputes on the land.</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,146,60,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🏗️</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Building Plan is Approved</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Ensure KMDA, municipal corporation, or relevant authority has sanctioned the building plan.</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">📖</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Read the Sale Agreement Carefully</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Check every clause — especially delay penalty, refund terms, and possession conditions before signing.</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,146,60,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🏦</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Project is Bank-Approved</div><div style="font-size:12px;color:var(--text3);line-height:1.5">If SBI, HDFC, or ICICI are offering home loans here, it signals that the bank has done due diligence.</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,113,133,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">⚠️</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Check for RERA Complaints</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Search the RERA portal for complaints against this developer or project. Multiple complaints = red flag.</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(251,146,60,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🔌</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Utility Approvals in Place</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Confirm water, electricity, and sewerage connections are approved or in progress.</div></div></div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)"><span style="background:rgba(52,211,153,0.15);border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0">🤝</span><div><div style="font-weight:600;font-size:var(--fs-sm);color:var(--text);margin-bottom:2px">Developer Track Record</div><div style="font-size:12px;color:var(--text3);line-height:1.5">Research the builder's previous projects. Visit a completed project and speak to residents.</div></div></div>
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);text-align:center">
+        <p style="font-size:var(--fs-sm);color:var(--text3);margin-bottom:4px">📧 Questions or feedback?</p>
+        <a href="mailto:info@kevalahome.com" style="color:var(--purple);font-weight:600;text-decoration:none;font-size:var(--fs-md)">info@kevalahome.com</a>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="costModal" onclick="if(event.target===this)closeCostModal()">
   <div class="modal">
-    <h3>💰 Check True Cost</h3>
+    <h3>🧮 Total Cost Calculator</h3>
+<p style="font-size:12px;color:var(--text3);margin-bottom:16px;line-height:1.5;">Enter your expected agreement value and carpet area to calculate the total cost of this project. The pre-filled values are defaults — please edit them to match your specific property.</p>
     <label>Agreement Value (₹)</label>
     <input type="number" id="costPrice" value="8000000" min="100000" step="50000">
     <label>Carpet Area (sq ft)</label>
@@ -324,7 +353,12 @@ function cardHTML(p,idx){
       <button class="btn-verify" onclick="window.open('${PORTAL}','_blank')">🛡️ Verify Official</button>
       <button class="btn-share" onclick="shareProject('${esc(p.name)}','${esc(p.rera)}')">📤 Share</button>
     </div>
-    <div class="card-actions"><button class="btn-cost" onclick="showCostModal()">💰 Check True Cost</button></div>
+        <div class="feedback-row" id="fb-${esc(p.id)}">
+      <span>Was this helpful?</span>
+      <button class="feedback-yes" onclick="feedbackYes('${esc(p.id)}','${esc(p.name)}')">👍 Yes</button>
+      <button class="feedback-no" onclick="feedbackNo('${esc(p.id)}','${esc(p.name)}')">📧 No</button>
+    </div>
+<div class="card-actions"><button class="btn-cost" onclick="showCostModal()">🧮 Total Cost Calculator</button></div>
     ${certBtn?`<div style="padding:0 16px 16px">${certBtn}</div>`:''}
   </div>`;
 }
@@ -339,6 +373,18 @@ function openCostApp(){
 }
 
 function viewCert(reraNo){const c=getCertificateForProject(reraNo);window.open(c&&c.filename?'certificates/'+c.filename:PORTAL,'_blank')}
+function feedbackYes(id, name) {
+  const el = document.getElementById('fb-' + id);
+  if (el) {
+    el.innerHTML = '<div class="feedback-thanks">Thanks for the feedback! ✨</div>';
+    setTimeout(() => { if (el) el.style.opacity = '0'; }, 2000);
+  }
+}
+
+function feedbackNo(id, name) {
+  const subject = encodeURIComponent('Missing info for ' + name);
+  window.location.href = 'mailto:info@kevalahome.com?subject=' + subject;
+}
 function shareProject(name,rera){const t=`🏠 ${name}\n📋 ${rera}\n\nVerify: ${PORTAL}`;if(navigator.share)navigator.share({title:name,text:t}).catch(()=>{});else window.open('https://wa.me/?text='+encodeURIComponent(t),'_blank')}
 
 function renderQuickChips(){document.getElementById('quickChips').innerHTML=QUICK.map(q=>`<button class="chip" onclick="quickSearch('${q}')">${q}</button>`).join('')}
@@ -353,8 +399,9 @@ function updateBadge(){const b=document.getElementById('bkBadge');b.textContent=
 
 function updateStats(){document.getElementById('statTotal').textContent=S.data.length.toLocaleString('en-IN');document.getElementById('statActive').textContent=S.data.filter(p=>p.s==='A').length.toLocaleString('en-IN');document.getElementById('statRevoked').textContent=S.data.filter(p=>p.s==='R').length.toLocaleString('en-IN')}
 
-function showChecklist(){alert('✅ RERA Registration\n📅 Completion Date\n💳 70% Funds in Escrow\n📜 Land Title Clear\n🏗️ Building Plan Approved\n📖 Read Sale Agreement\n🏦 Bank-Approved Project\n⚠️ Check RERA Complaints\n🔌 Utility Approvals\n🤝 Developer Track Record')}
-
+function showChecklist(){document.getElementById('checkModal').classList.add('show');document.body.style.overflow='hidden'}
+function closeCheck(){document.getElementById('checkModal').classList.remove('show');document.body.style.overflow=''}
+function closeCheckOutside(e){if(e.target===document.getElementById('checkModal'))closeCheck()}
 function setupInstall(){window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();S.deferredInstall=e;if(!localStorage.getItem('kvl_inst_dismissed'))document.getElementById('installBanner').style.display='flex'});window.addEventListener('appinstalled',()=>{document.getElementById('installBanner').style.display='none'})}
 function triggerInstall(){if(S.deferredInstall)S.deferredInstall.prompt();else setPage('guide')}
 function dismissInstall(e){e.stopPropagation();document.getElementById('installBanner').style.display='none';localStorage.setItem('kvl_inst_dismissed','1')}
