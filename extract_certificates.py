@@ -7,6 +7,8 @@ extracts structured data, and outputs certificates.json
 Run: python extract_certificates.py
 """
 
+import os
+import sys
 import pdfplumber
 import json
 import re
