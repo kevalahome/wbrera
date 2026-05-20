@@ -357,7 +357,7 @@ body.light .card-name{color:var(--text)}
 </div>
 
 <script>
-let PROJECTS_DATA=[],CERTIFICATES_DATA=[],CERT_LOOKUP={};
+let PROJECTS_DATA=[],CERTIFICATES_DATA=[],CERT_LOOKUP={},DETAILS_LOOKUP={};
 const S={data:[],allResults:[],displayCount:20,filter:'all',query:'',bookmarks:[],history:[],darkMode:true,deferredInstall:null};
 const PAGE_SIZE=20,QUICK=['Merlin','Eden City','Shapoorji','PS Group','Hiland','Optima','Tata','Urbana','Crown','Diamond'];
 const PORTAL='https://rera.wb.gov.in/district_project.php?dcode=0';
@@ -365,10 +365,12 @@ const COST_APP_URL='https://kevalahome.github.io/wbcost';
 
 async function loadData(){
   try{
-    const[a,r,c]=await Promise.all([fetch('/wbrera/data/approved.json').then(r=>r.json()),fetch('/wbrera/data/rejected.json').then(r=>r.json()),fetch('/wbrera/data/certificates.json').then(r=>r.json())]);
+    const BASE='https://raw.githubusercontent.com/kevalahome/wbrera/main/data/';
+    const[a,r,c,det]=await Promise.all([fetch(BASE+'approved.json').then(r=>r.json()),fetch(BASE+'rejected.json').then(r=>r.json()),fetch(BASE+'certificates.json').then(r=>r.json()),fetch(BASE+'projects_cleaned.json').then(r=>r.json()).catch(()=>[])]);
     PROJECTS_DATA=[...a,...r];CERTIFICATES_DATA=c||[];
     CERTIFICATES_DATA.forEach(c=>{if(c.rera_no)CERT_LOOKUP[c.rera_no.replace(/[\/\-]/g,'').toUpperCase()]=c});
-    S.data=PROJECTS_DATA;updateStats();return true;
+    (det||[]).forEach(d=>{const k=(d.rera_reg_no||'').replace(/[\/\-_\.\s]/g,'').toUpperCase();if(k)DETAILS_LOOKUP[k]=d});
+    S.data=PROJECTS_DATA;updateStats();updateAboutStats();return true;
   }catch(e){console.warn(e);return false}
 }
 
