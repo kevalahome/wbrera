@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" id="themeColorMeta" content="#1a0627">
-<meta name="description" content="Is this project RERA registered in West Bengal? Check RERA registration status of any Kolkata or WB real estate project instantly. Free, official & works offline.">
+<meta name="description" content="Kevala Home — Verify West Bengal RERA registered real estate projects. Free, fast, official.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="West Bengal RERA Check">
-<meta name="google-site-verification" content="N8Rs9Zw6xWbpbnKx083_8D8-EpHTLbrMkqOxtUMvkSQ" />
-<link rel="manifest" href="/wbrera/manifest.json">
-<title>Check West Bengal RERA Registration - Project Status | Kevala Home</title>
+<meta name="apple-mobile-web-app-title" content="WB RERA">
+<link rel="manifest" href="manifest.json">
+<title>Kevala Home — WB RERA Check</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -179,29 +178,14 @@ body.light .card-name{color:var(--text)}
 .detail-val a{color:var(--purple);text-decoration:none;font-weight:600}
 .detail-val a:hover{text-decoration:underline}
 </style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Kevala Home",
-  "alternateName": ["Kevala Home WBRERA Tracker", "KevalaHome Tracker", "WB RERA Registration Check"],
-  "url": "https://wbrera.kevalahome.com/",
-  "description": "Check RERA registration status of any real estate project in West Bengal. Search by project name or registration number to verify if a Kolkata or WB project is active, revoked or pending.",
-  "provider": {
-    "@type": "Organization",
-    "name": "Kevala Home",
-    "url": "https://kevalahome.com"
-  }
-}
-</script>
-<meta property="og:site_name" content="Kevala Home" /></head>
+</head>
 <body>
 
 <header class="header">
   <div class="header-inner">
     <div class="logo">
 <img src="logo.jpg" alt="Kevala Home" style="width:42px;height:42px;border-radius:13px;object-fit:cover" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'">      <div class="logo-mark" id="logoFallback" style="display:none">KH</div>
-      <div><div class="logo-name">Kevala Home</div><div class="logo-tag">WB RERA Registration Check</div></div>
+      <div><div class="logo-name">Kevala Home</div><div class="logo-tag">West Bengal RERA</div></div>
     </div>
     <div class="header-actions">
       <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
@@ -214,9 +198,9 @@ body.light .card-name{color:var(--text)}
 <main class="main">
   <div class="page active" id="page-search">
     <div class="hero">
-      <div class="hero-pill">🛡️ Official WB RERA Registration Data</div>
-      <h1>Check RERA Registration <em>West Bengal</em></h1>
-      <p class="hero-sub">Is your Kolkata or West Bengal project RERA registered? Search by project name or registration number — verify status, check if active or revoked, free &amp; official.</p>
+      <div class="hero-pill">🛡️ Official WB RERA Data</div>
+      <h1>Verify Before<br>You <em>Buy.</em></h1>
+      <p class="hero-sub">Check RERA registration status of any West Bengal real estate project instantly — free &amp; official.</p>
       <div class="hero-badges"><span class="hero-badge offline">Works Offline</span></div>
       <div class="stats-strip">
         <div class="stat-item"><div class="stat-num" id="statTotal">—</div><div class="stat-label">Projects</div></div>
@@ -233,7 +217,7 @@ body.light .card-name{color:var(--text)}
       <div class="search-label">🔍 Search Projects</div>
       <div class="search-wrap">
         <span class="search-ico">🔍</span>
-        <input id="searchInput" type="text" placeholder="Search project name or RERA registration number…" autocomplete="off" oninput="onSearch()">
+        <input id="searchInput" type="text" placeholder="Project name or Registration number…" autocomplete="off" oninput="onSearch()">
         <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
       </div>
       <div class="filter-row">
@@ -570,7 +554,7 @@ function dismissInstall(e){e.stopPropagation();document.getElementById('installB
 
 let toastTmr;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTmr);toastTmr=setTimeout(()=>t.classList.remove('show'),2500)}
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/wbrera/sw.js').catch(()=>{}));
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 
 async function init(){
   const t=localStorage.getItem('kvl_theme');S.darkMode=t!=='light';applyTheme();
