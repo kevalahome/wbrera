@@ -51,6 +51,7 @@
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -224,7 +225,7 @@ body.light .card-name{color:var(--text)}
 <header class="header">
   <div class="header-inner">
     <div class="logo">
-<img src="logo.jpg" alt="Kevala Home" style="width:42px;height:42px;border-radius:13px;object-fit:cover" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'">      <div class="logo-mark" id="logoFallback" style="display:none">KH</div>
+<img src="logo.jpg" alt="Kevala Home" width="42" height="42" style="border-radius:13px;object-fit:cover" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex'">      <div class="logo-mark" id="logoFallback" style="display:none">KH</div>
       <div><div class="logo-name">Kevala Home</div><div class="logo-tag">West Bengal RERA</div></div>
     </div>
     <div class="header-actions">
@@ -415,7 +416,10 @@ async function loadData(){
     PROJECTS_DATA=[...a,...r];CERTIFICATES_DATA=c||[];
     CERTIFICATES_DATA.forEach(c=>{if(c.rera_no)CERT_LOOKUP[c.rera_no.replace(/[\/\-]/g,'').toUpperCase()]=c});
     (det||[]).forEach(d=>{const k=(d.rera_reg_no||'').replace(/[\/\-_\.\s]/g,'').toUpperCase();if(k)DETAILS_LOOKUP[k]=d});
-    S.data=PROJECTS_DATA;updateStats();updateAboutStats();return true;
+    S.data=PROJECTS_DATA;updateStats();updateAboutStats();
+const urlQ=new URLSearchParams(window.location.search).get('search');
+if(urlQ){document.getElementById('searchInput').value=urlQ;S.query=urlQ;document.getElementById('clearBtn').classList.add('show');document.getElementById('quickBlock').style.display='none';performSearch(false);}
+return true;
   }catch(e){console.warn(e);return false}
 }
 
@@ -464,15 +468,19 @@ function onSearch(){
   document.getElementById('quickBlock').style.display=q.length>0?'none':'block';
   clearTimeout(searchTmr);
   if(q.length<2){document.getElementById('resCon').innerHTML='';document.getElementById('resRow').style.display='none';renderHistory();return}
-  document.getElementById('histSec').innerHTML='';searchTmr=setTimeout(performSearch,220);
+  document.getElementById('histSec').innerHTML='';searchTmr=setTimeout(()=>performSearch(true),220);
 }
 
-function performSearch(){
+function performSearch(shouldPushState=true){
   const q=S.query.toLowerCase();
   let r=S.data.filter(p=>p.name.toLowerCase().includes(q)||p.rera.toLowerCase().includes(q)||p.id.toLowerCase().includes(q));
   if(S.filter==='active')r=r.filter(p=>p.s==='A');
   if(S.filter==='revoked')r=r.filter(p=>p.s==='R');
   S.allResults=r;S.displayCount=PAGE_SIZE;renderResults();addHistory(S.query);
+  if(shouldPushState&&S.query.length>=2){
+    window.history.replaceState(null,'',window.location.pathname+'?search='+encodeURIComponent(S.query));
+    document.title=`${S.query} RERA Registration Status | West Bengal | Kevala Home`;
+  }
 }
 
 function clearSearch(){
@@ -480,8 +488,9 @@ function clearSearch(){
   document.getElementById('clearBtn').classList.remove('show');
   document.getElementById('resCon').innerHTML='';document.getElementById('resRow').style.display='none';
   document.getElementById('quickBlock').style.display='block';renderHistory();
+  window.history.replaceState(null,'',window.location.pathname);
+  document.title='Check West Bengal RERA Registration - Project Status | Kevala Home';
 }
-
 function renderResults(){
   const c=document.getElementById('resCon'),t=S.allResults.length,n=Math.min(S.displayCount,t);
   if(t===0){document.getElementById('resRow').style.display='none';c.innerHTML='<div class="state-view"><h3>No projects found</h3></div>';return}
