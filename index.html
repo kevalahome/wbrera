@@ -498,10 +498,22 @@ function renderResults(){
   document.getElementById('resCt').innerHTML=`Showing <strong>${n}</strong> of <strong>${t}</strong>`;
   document.getElementById('resMeta').textContent='West Bengal RERA';
   let h=S.allResults.slice(0,n).map((p,i)=>cardHTML(p,i)).join('');
-  if(n<t)h+=`<button class="load-more" onclick="loadMore()">Load more</button>`;
+  if(n<t)h+=`<div id="scrollSentinel" style="height:1px"></div>`;
   c.innerHTML=h;
+setupScrollObserver();
 }
 function loadMore(){S.displayCount+=PAGE_SIZE;renderResults()}
+function setupScrollObserver(){
+  const sentinel=document.getElementById('scrollSentinel');
+  if(!sentinel)return;
+  if(window._scrollObserver)window._scrollObserver.disconnect();
+  window._scrollObserver=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting&&S.displayCount<S.allResults.length){
+      S.displayCount+=PAGE_SIZE;renderResults();
+    }
+  },{rootMargin:'200px'});
+  window._scrollObserver.observe(sentinel);
+}
 
 function cardHTML(p,idx){
   const saved=S.bookmarks.some(b=>b.id===p.id),cert=getCertificateForProject(p.rera);
