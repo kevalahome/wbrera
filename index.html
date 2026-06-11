@@ -208,7 +208,8 @@ body.light .card-name{color:var(--text)}
 .about-link-ico{font-size:20px;width:30px;text-align:center}
 .about-link-label{flex:1;font-size:var(--fs-md);font-weight:500}
 .about-link-arr{color:var(--text3);font-size:18px}
-.details-toggle{width:100%;padding:11px 16px;background:none;border:none;border-top:1px solid var(--border);color:var(--purple);font-family:var(--f-body);font-size:var(--fs-sm);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;letter-spacing:.3px}
+.details-toggle{margin:0 16px 14px;width:calc(100% - 32px);padding:13px 16px;background:rgba(192,132,252,0.08);border:1.5px solid rgba(192,132,252,0.3);border-radius:var(--radius-sm);color:var(--purple);font-family:var(--f-body);font-size:var(--fs-md);font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;letter-spacing:.2px;transition:background .2s,border-color .2s}
+.details-toggle:hover{background:rgba(192,132,252,0.15);border-color:var(--purple2)}
 .details-panel{display:none;padding:0 16px 16px;border-top:1px solid var(--border)}
 .details-panel.open{display:block}
 .details-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
@@ -557,7 +558,7 @@ function cardHTML(p,idx){
   }
   return `<div class="proj-card${p.s==='R'?' revoked-card':''}">
     <div class="card-top"><div class="card-name-block"><div class="card-name">${hl(p.name,S.query)}</div><div class="card-id">🆔 ${p.id}</div></div><button class="bkmark-btn${saved?' saved':''}" onclick="toggleSave('${esc(p.id)}')">🔖</button></div>
-    <div class="card-grid"><div class="card-field span2"><div class="field-label">Registration No.</div><div class="field-val">${hl(p.rera,S.query)}</div></div><div class="card-field"><div class="field-label">Status</div><div class="field-val"><span class="status-badge ${sc}">${sl}</span></div></div><div class="card-field"><div class="field-label">Completion</div><div class="field-val">${p.comp||'—'}</div></div>${df}</div>
+    <div class="card-grid"><div class="card-field span2"><div class="field-label">Registration No.</div><div class="field-val">${hl(p.rera,S.query)}</div></div><div class="card-field"><div class="field-label">Status</div><div class="field-val"><span class="status-badge ${sc}">${sl}</span></div></div><div class="card-field"><div class="field-label">Completion</div><div class="field-val">${p.comp||'—'}</div></div>${df}</div>${(()=>{const _d=getDetails(p.rera);const _pr=_d?(_d.promoter_name||_d.promoter||""):"";const _fi=_d?(_d.firm_name||""):"";const _pd=_fi&&_fi!==_pr?`${_pr} (${_fi})`:_pr;const _di=_d?(_d.district||""):"";return (_pd?`<div class="card-field span2"><div class="field-label">\U0001f464 Promoter</div><div class="field-val">${_pd}</div></div>`:"")+(_di?`<div class="card-field"><div class="field-label">\U0001f4cd District</div><div class="field-val">${_di}</div></div>`:"");})()}
     ${certHTML}
     <div class="card-flags">${statusFlag}</div>
     ${detHTML}
@@ -571,8 +572,7 @@ function cardHTML(p,idx){
       <button class="feedback-no" onclick="feedbackNo('${esc(p.id)}','${esc(p.name)}')">📧 No</button>
     </div>
 <div class="card-actions"><button class="btn-cost" onclick="showCostModal()">🧮 Total Cost Calculator</button></div>
-    ${certBtn?`<div style="padding:0 16px 16px">${certBtn}</div>`:''}
-  </div>`;
+      </div>`;
 }
 
 function showCostModal(){document.getElementById('costModal').classList.add('show')}
