@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" id="themeColorMeta" content="#1a0627">
 <meta name="description" content="Kevala Home — Verify West Bengal RERA registered real estate projects. Free, fast, official.">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -413,15 +413,27 @@ const COST_APP_URL='https://kevalahome.github.io/wbcost';
 async function loadData(){
   try{
     const BASE='https://raw.githubusercontent.com/kevalahome/wbrera/main/data/';
-    const[a,r,c,det]=await Promise.all([fetch(BASE+'approved.json').then(r=>r.json()),fetch(BASE+'rejected.json').then(r=>r.json()),fetch(BASE+'certificates.json').then(r=>r.json()),fetch(BASE+'projects_cleaned.json').then(r=>r.json()).catch(()=>[])]);
+    const[a,r,c]=await Promise.all([fetch(BASE+'approved.json').then(r=>r.json()),fetch(BASE+'rejected.json').then(r=>r.json()),fetch(BASE+'certificates.json').then(r=>r.json())]);
     PROJECTS_DATA=[...a,...r];CERTIFICATES_DATA=c||[];
     CERTIFICATES_DATA.forEach(c=>{if(c.rera_no)CERT_LOOKUP[c.rera_no.replace(/[\/\-]/g,'').toUpperCase()]=c});
-    (det||[]).forEach(d=>{const k=(d.rera_reg_no||'').replace(/[\/\-_\.\s]/g,'').toUpperCase();if(k)DETAILS_LOOKUP[k]=d});
     S.data=PROJECTS_DATA;updateStats();updateAboutStats();
 const urlQ=new URLSearchParams(window.location.search).get('search');
 if(urlQ){document.getElementById('searchInput').value=urlQ;S.query=urlQ;document.getElementById('clearBtn').classList.add('show');document.getElementById('quickBlock').style.display='none';performSearch(false);}
 return true;
   }catch(e){console.warn(e);return false}
+}
+
+let DETAILS_LOADED=false,DETAILS_LOADING=false;
+async function ensureDetailsLoaded(){
+  if(DETAILS_LOADED)return true;
+  if(DETAILS_LOADING)return new Promise(res=>{const t=setInterval(()=>{if(DETAILS_LOADED){clearInterval(t);res(true);}},80);});
+  DETAILS_LOADING=true;
+  try{
+    const BASE='https://raw.githubusercontent.com/kevalahome/wbrera/main/data/';
+    const det=await fetch(BASE+'projects_cleaned.json').then(r=>r.json());
+    (det||[]).forEach(d=>{const k=(d.rera_reg_no||'').replace(/[\/\-_\.\s]/g,'').toUpperCase();if(k)DETAILS_LOOKUP[k]=d});
+    DETAILS_LOADED=true;DETAILS_LOADING=false;return true;
+  }catch(e){DETAILS_LOADING=false;return false;}
 }
 
 function getDetails(reraNo){
@@ -431,7 +443,50 @@ function getDetails(reraNo){
   for(const[kk,v]of Object.entries(DETAILS_LOOKUP)){if(k.includes(kk)||kk.includes(k))return v}
   return null;
 }
-function toggleDetails(id){const el=document.getElementById('det-'+id);const btn=document.getElementById('detbtn-'+id);if(!el)return;const open=el.classList.toggle('open');btn.textContent=open?'▲ Hide Details':'▼ More Details'}
+async function toggleDetails(id){
+  const el=document.getElementById('det-'+id);
+  const btn=document.getElementById('detbtn-'+id);
+  if(!el)return;
+  // If opening and details not loaded yet, load first
+  const isOpening=!el.classList.contains('open');
+  if(isOpening&&!DETAILS_LOADED){
+    btn.textContent='⏳ Loading…';btn.disabled=true;
+    await ensureDetailsLoaded();
+    btn.disabled=false;
+    // Re-render just this card's details panel with fresh data
+    const p=S.data.find(x=>x.id===id)||(S.bookmarks||[]).find(x=>x.id===id);
+    if(p){
+      const det=getDetails(p.rera);
+      if(det){
+        const rows=[];
+        const promoter=det.promoter_name||det.promoter||'';
+        const firm=det.firm_name||'';
+        const promoterDisplay=firm&&firm!==promoter?`${promoter} (${firm})`:promoter;
+        if(promoterDisplay)rows.push(`<div class="detail-field full"><div class="detail-label">👤 Promoter / Developer</div><div class="detail-val">${promoterDisplay}</div></div>`);
+        if(det.promoter_address)rows.push(`<div class="detail-field full"><div class="detail-label">🏢 Promoter Address</div><div class="detail-val">${det.promoter_address}</div></div>`);
+        if(det.project_type)rows.push(`<div class="detail-field"><div class="detail-label">🏗️ Project Type</div><div class="detail-val">${det.project_type}</div></div>`);
+        if(det.district)rows.push(`<div class="detail-field"><div class="detail-label">📍 District</div><div class="detail-val">${det.district}</div></div>`);
+        if(det.project_address)rows.push(`<div class="detail-field full"><div class="detail-label">📌 Project Address</div><div class="detail-val">${det.project_address}</div></div>`);
+        if(det.total_units)rows.push(`<div class="detail-field"><div class="detail-label">🏠 Total Units</div><div class="detail-val">${det.total_units}</div></div>`);
+        if(det.completion_date)rows.push(`<div class="detail-field"><div class="detail-label">📅 Completion Date</div><div class="detail-val">${det.completion_date}</div></div>`);
+        if(det.land_area_sqm)rows.push(`<div class="detail-field"><div class="detail-label">📐 Land Area</div><div class="detail-val">${Number(det.land_area_sqm).toLocaleString('en-IN')} sq.m</div></div>`);
+        if(det.carpet_area_sqm)rows.push(`<div class="detail-field"><div class="detail-label">🛋️ Carpet Area</div><div class="detail-val">${Number(det.carpet_area_sqm).toLocaleString('en-IN')} sq.m</div></div>`);
+        if(det.amenities&&det.amenities.length)rows.push(`<div class="detail-field full"><div class="detail-label">✨ Amenities</div><div class="detail-val">${det.amenities.join(' · ')}</div></div>`);
+        if(det.facilities&&det.facilities.length)rows.push(`<div class="detail-field full"><div class="detail-label">🔧 Facilities</div><div class="detail-val">${det.facilities.join(' · ')}</div></div>`);
+        if(det.scraped_at)rows.push(`<div class="detail-field full"><div class="detail-label">🕐 Data Last Fetched</div><div class="detail-val">${new Date(det.scraped_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}, ${new Date(det.scraped_at).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div></div>`);
+        if(det.google_maps_url)rows.push(`<div class="detail-field full"><div class="detail-label">🗺️ Location</div><div class="detail-val"><a href="${det.google_maps_url}" target="_blank" rel="noopener">Open in Google Maps ↗</a></div></div>`);
+        if(det.source_url)rows.push(`<div class="detail-field full"><div class="detail-label">🔗 Official Source</div><div class="detail-val"><a href="${det.source_url}" target="_blank" rel="noopener">View on WB RERA Portal ↗</a></div></div>`);
+        if(det.certificate_url)rows.push(`<div class="detail-field full"><div class="detail-label">📄 RERA Certificate</div><div class="detail-val"><a href="${det.certificate_url}" target="_blank" rel="noopener">Download Certificate PDF ↗</a></div></div>`);
+        if(rows.length)el.innerHTML=`<div class="details-grid">${rows.join('')}</div>`;
+        else el.innerHTML='<p style="color:var(--text3);font-size:var(--fs-sm);padding:10px 0">No additional details available.</p>';
+      } else {
+        el.innerHTML='<p style="color:var(--text3);font-size:var(--fs-sm);padding:10px 0">No additional details available for this project.</p>';
+      }
+    }
+  }
+  const open=el.classList.toggle('open');
+  btn.textContent=open?'▲ Hide Details':'▼ More Details';
+}
 function updateAboutStats(){
   const tot=document.getElementById('aboutTotal'),act=document.getElementById('aboutActive'),rev=document.getElementById('aboutRevoked');
   if(tot)tot.textContent=S.data.length.toLocaleString('en-IN')+' projects';
