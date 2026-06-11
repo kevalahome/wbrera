@@ -1,7 +1,7 @@
 // Kevala Home Service Worker
 // Caches the app shell for reliable offline access
 
-const CACHE_NAME = 'kevala-home-v3';
+const CACHE_NAME = 'kevala-home-v4';
 const APP_SHELL = [
   '/',
   '/index.html',
