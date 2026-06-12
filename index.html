@@ -447,13 +447,15 @@ async function toggleDetails(id){
   const el=document.getElementById('det-'+id);
   const btn=document.getElementById('detbtn-'+id);
   if(!el)return;
-  // If opening and details not loaded yet, load first
   const isOpening=!el.classList.contains('open');
-  if(isOpening&&!DETAILS_LOADED){
-    btn.textContent='⏳ Loading…';btn.disabled=true;
-    await ensureDetailsLoaded();
-    btn.disabled=false;
-    // Re-render just this card's details panel with fresh data
+  // Populate this panel if it hasn't been filled yet, regardless of global load state
+  if(isOpening&&!el.dataset.filled){
+    if(!DETAILS_LOADED){
+      btn.textContent='⏳ Loading…';btn.disabled=true;
+      await ensureDetailsLoaded();
+      btn.disabled=false;
+    }
+    // Render this card's details panel with fresh data
     const p=S.data.find(x=>x.id===id)||(S.bookmarks||[]).find(x=>x.id===id);
     if(p){
       const det=getDetails(p.rera);
@@ -482,6 +484,7 @@ async function toggleDetails(id){
       } else {
         el.innerHTML='<p style="color:var(--text3);font-size:var(--fs-sm);padding:10px 0">No additional details available for this project.</p>';
       }
+      el.dataset.filled='1';
     }
   }
   const open=el.classList.toggle('open');
