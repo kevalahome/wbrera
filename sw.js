@@ -1,13 +1,11 @@
 // Kevala Home Service Worker
 // Caches the app shell for reliable offline access
-
-const CACHE_NAME = 'kevala-home-v4';
+const CACHE_NAME = 'kevala-home-v5';
 const APP_SHELL = [
   '/',
   '/index.html',
   '/manifest.json'
 ];
-
 // Install - Cache app shell
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -16,7 +14,6 @@ self.addEventListener('install', (event) => {
       .then(() => self.skipWaiting())
   );
 });
-
 // Activate - Clean old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
@@ -29,7 +26,6 @@ self.addEventListener('activate', (event) => {
     }).then(() => self.clients.claim())
   );
 });
-
 // Fetch - Stale-while-revalidate strategy
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
