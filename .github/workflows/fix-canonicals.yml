@@ -1,0 +1,28 @@
+name: Fix Project Canonical URLs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix-canonicals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fix canonical URLs in project files
+        run: |
+          find projects/ -name "*.html" | while read file; do
+            slug=$(basename "$file" .html)
+            old="https://wbrera.kevalahome.com/projects/${slug}\""
+            new="https://wbrera.kevalahome.com/projects/${slug}.html\""
+            sed -i "s|${old}|${new}|g" "$file"
+          done
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add projects/
+          git diff --staged --quiet || git commit -m "fix: add .html to canonical URLs in all project pages"
+          git push
