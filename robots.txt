@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wbrera.kevalahome.com/sitemap.xml
+Sitemap: https://wbrera.kevalahome.com/sitemap_projects.xml
