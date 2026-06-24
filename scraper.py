@@ -392,15 +392,14 @@ async def main():
             save_json(PROCODES_FILE, all_procodes)
 
         # ── Stage 2: Scrape only projects not yet done ────────────────────────
-        # Skip if already in done_set AND already has a non-empty project_name
+        # Skip if already has a non-empty, valid project_name in existing data
         def needs_scrape(procode):
-            if procode in done_set:
-                existing = existing_map.get(procode, {})
-                # Re-scrape if project_name is missing or was incorrectly set
-                # (old scraper set it to "WEST BENGAL REAL ESTATE..." page title)
-                name = existing.get("project_name", "")
-                if name and "WEST BENGAL" not in name.upper() and len(name) > 2:
-                    return False  # already clean, skip
+            existing = existing_map.get(procode, {})
+            # Re-scrape if project_name is missing or was incorrectly set
+            # (old scraper set it to "WEST BENGAL REAL ESTATE..." page title)
+            name = existing.get("project_name", "")
+            if name and "WEST BENGAL" not in name.upper() and len(name) > 2:
+                return False  # already clean, skip
             return True
 
         todo = [p for p in all_procodes if needs_scrape(p)]
