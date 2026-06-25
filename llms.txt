@@ -1,0 +1,41 @@
+# Kevala Home — WB RERA Check
+
+> Free Progressive Web App to verify the RERA registration status of any real estate project in West Bengal. No login, no ads, works offline. Official data from rera.wb.gov.in.
+
+WB RERA Check is a free tool by Kevala Home that lets property buyers and sellers instantly verify whether a West Bengal real estate project is RERA-registered and currently active, revoked, or expired — before paying any booking advance. The app covers 4,300+ projects sourced from the official West Bengal RERA portal and is installable as a PWA on Android and iOS.
+
+## Core Function
+
+- [WB RERA Check](https://wbrera.kevalahome.com/): Search 4,300+ WB RERA registered projects by project name, promoter name, or RERA registration number. Returns live active / revoked / expired status, registration and completion dates, promoter details, district, project type, unit count, amenities, and a link to the official RERA certificate PDF.
+
+## Key Pages & Features
+
+- [Search](https://wbrera.kevalahome.com/): Main search interface. Supports free-text search, filter by Active or Revoked status, quick-search chips for common developers, and search history. Results load from a cached JSON dataset served via GitHub — works fully offline after first visit.
+- [Browse All RERA Projects](https://wbrera.kevalahome.com/projects/index.html): Full index of all WB RERA registered projects, browseable without search.
+- [Install Guide](https://wbrera.kevalahome.com/#guide): Step-by-step instructions to install the app on Android (Chrome), iPhone/iPad (Safari), and Desktop (Chrome/Edge). Installing enables full-screen mode and offline access.
+- [Saved Projects](https://wbrera.kevalahome.com/#saved): Bookmark projects locally on-device for quick re-access. No account required — stored in the browser.
+- [Buyer Safety Checklist](https://wbrera.kevalahome.com/#checklist): A 10-point checklist of things to verify before paying a booking advance — RERA status, building plan sanction, land title, escrow account, sale agreement clauses, bank approval, utility connections, and developer track record.
+
+## Data
+
+- Source: Official West Bengal RERA portal (rera.wb.gov.in)
+- Dataset: approved.json (active projects), rejected.json (revoked projects), certificates.json (certificate metadata), projects_cleaned.json (enriched project details including promoter address, amenities, Google Maps URL, source URL, certificate PDF link)
+- Updates: Dataset is periodically refreshed from the official portal and served via GitHub raw content
+- Coverage: 4,300+ projects across all districts of West Bengal
+
+## About
+
+- [About](https://wbrera.kevalahome.com/#about): Tool overview, data coverage stats, links to the official WB RERA portal and Kevala Home main site
+- [Main Site](https://kevalahome.com/): Kevala Home homepage — links to all three free tools
+- Contact: info@kevalahome.com
+
+## Technical Notes
+
+Built as a single-page PWA (Progressive Web App). All project data is fetched from GitHub-hosted JSON files and cached via a service worker for offline use. No backend server, no user data collected, no login required. The app uses stale-while-revalidate caching — searches work even without an internet connection using the last-fetched dataset.
+
+## What This Tool Does Not Do
+
+- It does not provide legal advice or make recommendations on whether to buy a property
+- It does not replace verification on the official WB RERA portal (rera.wb.gov.in) before making a financial decision
+- It does not cover RERA registrations outside West Bengal
+- It does not show current property prices or availability
